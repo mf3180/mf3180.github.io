@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+  <html>
+<head>
+	
+</head>
+<body> 
+	<h1> Process that Birdsong!</h1>
+	
+	<br>
+	<br>
+
+	<audio controls>
+		<source src="MourningWarbler.mp3" type="audio/mpeg">
+		<source src="MournignWarbler.ogg" type="audio/ogg">
+			Your browser doesn't support the audio element.
+		</audio>
+</body>
+	<script>
+		var audiocontext  = new (window.AudioContext || window.webkitAudioContext)();
+		var myAudio = document.querySelector('audio');
+
+		var source = audiocontext.createMediaElementSource(myAudio);
+		var gainNode = audiocontext.createGain();
+
+		source.connect(gainNode);
+		gainNode.connect(audiocontext.destination);
+
+
+</script>
+</html>
+
+
+
