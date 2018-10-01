@@ -1,65 +1,67 @@
+<!--CODE HEAVILY ADAPTED/SOURCED FROM https://jsfiddle.net/KeithMcMillenInstruments/nLwLthj0/?utm_source=website&utm_medium=embed&utm_campaign=nLwLthj0-->
+
+
 <!DOCTYPE html>
 
 <html>
-<title>nah bro</title>
+<title>Filtering Birdsong</title>
 <body>
-<div class='controls'>
+    <h1>Filtering Birdsong</h1>
+    
+    <br>
+    
+    <h3>Experiment with applying a lowpass filter to the birdsong of a Mourning Warbler!</h3>
+
+    <br>
+    <br>
+
+<div class='play/pause'>
     <button class="play" disabled>loading...</button>
     <button class="stop" disabled>stop</button>
 </div>
-<div class='play-controls'>
-    <label for='loop'>loop
-        <input type='checkbox' name='loop' class="loop" />
-    </label>
-</div>
-<div class='filter-controls'>
+
+<div class='filter frequency'>
     <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
 
         <input class='filter-slider' name='filterFreq' type='range' min='0' max='20000' step='10' value='2500' disabled />
     </label>
-    <label>quality (Q) value <span class='filter-q-value'>1</span> 
-        <input class="filter-q-slider" type="range" min=".0001" max="10" step=".0005" value="1" disabled/>
-    </label>
-    <label>filter gain value <span class='filter-gain-value'>0</span> 
-        <input class="filter-gain-slider" type="range" min="-40" max="40" step="1" value="0" disabled/>
-    </label>
+    
+    <br>
+
     <p>filter type</p>
     <select name="filterType" class="filtertype">
         <option value="lowpass">lowpass</option>
-        <option value="highpass">highpass</option>
-        <option value="bandpass">bandpass</option>
-        <option value="lowshelf">lowshelf</option>
-        <option value="highshelf">highshelf</option>
-        <option value="peaking">peaking</option>
-        <option value="notch">notch</option>
-        <option value="allpass">allpass</option>
     </select>
 </div>
+
+<br>
+
+<p>Audio provided courtesy of the <a href="https://www.macaulaylibrary.org/">Macaulay Library</a>.</p>
+
+<br>
+<br>
+
+<h3><a href="index.html">Back to Home</a></h3>
+
 </body>
 <script>
     var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     filter = audioContext.createBiquadFilter(),
-    sampleURL = 'MourningWarbler.mp3',
+    BIRDAUDIO = 'MourningWarbler.mp3',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
-    loopButton = document.querySelector('.loop'),
 
     filterType = document.querySelector('.filtertype'),
     filterFreq = document.querySelector('.freq'),
     filterFreqSlider = document.querySelector('.filter-slider'),
 
-    filterQ = document.querySelector('.filter-q-value'),
-    filterQSlider = document.querySelector('.filter-q-slider'),
-
-    filterGain = document.querySelector('.filter-gain-value'),
-    filterGainSlider = document.querySelector('.filter-gain-slider');
 
 // load our sound
 init();
 
 function init() {
-    loadSound(sampleURL);
+    loadSound(BIRDAUDIO);
 }
 
 playButton.onclick = function () {
@@ -70,9 +72,6 @@ stopButton.onclick = function () {
     stopSound();
 };
 
-loopButton.onclick = function () {
-    loop = event.target.checked;
-};
 
 filterType.oninput = function () {
     changeFilterType(filterType.value);
@@ -82,13 +81,6 @@ filterFreqSlider.oninput = function () {
     changeFilterFreq(filterFreqSlider.value);
 };
 
-filterQSlider.oninput = function () {
-    changeFilterQ(filterQSlider.value);
-};
-
-filterGainSlider.oninput = function () {
-    changeFilterGain(event.target.value);
-};
 
 // function to load sounds via AJAX
 function loadSound(url) {
@@ -118,16 +110,11 @@ function setupSound() {
 // play sound and enable / disable buttons
 function playSound() {
     setupSound();
-    UI('play');
     sound.start(0);
-    sound.onended = function () {
-        UI('stop');
-    }
 }
 
 // stop sound and enable / disable buttons
 function stopSound() {
-    UI('stop');
     sound.stop(0);
 }
 
@@ -135,22 +122,7 @@ function stopSound() {
 function changeFilterType(type) {
     filter.type = type;
     switch (type) {
-        case 'peaking':
-            filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
-            break;
         case 'lowpass':
-        case 'highpass':
-        case 'bandpass':
-        case 'notch':
-        case 'allpass':
-            filterGainSlider.disabled = true;
-            filterQSlider.disabled = false;
-            break;
-        case 'lowshelf':
-        case 'highshelf':
-            filterGainSlider.disabled = false;
-            filterQSlider.disabled = true;
             break;
     }
 }
@@ -161,46 +133,5 @@ function changeFilterFreq(freq) {
     filterFreq.innerHTML = freq + 'Hz';
 }
 
-// change filter Q and update display
-function changeFilterQ(Q) {
-    filter.Q.value = Q;
-    filterQ.innerHTML = Q;
-}
-
-// change filter Gain and update display
-function changeFilterGain(gain) {
-    filter.gain.value = gain;
-    filterGain.innerHTML = gain + 'dB';
-}
-
-function UI(state){
-    switch(state){
-        case 'play':
-            playButton.disabled = true;
-            stopButton.disabled = false;
-            filterFreqSlider.disabled = false;
-            filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
-            break;
-        case 'stop':
-            playButton.disabled = false;
-            stopButton.disabled = true;
-            filterFreqSlider.disabled = true;
-            filterQSlider.disabled = true;
-            filterGainSlider.disabled = true;
-            break;
-    }
-}
-
-
-/* ios enable sound output */
-window.addEventListener('touchstart', function(){
-    //create empty buffer
-    var buffer = audioContext.createBuffer(1, 1, 22050);
-    var source = audioContext.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioContext.destination);
-    source.start(0);
-}, false);
 </script>
 </html>
