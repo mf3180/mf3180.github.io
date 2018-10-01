@@ -1,41 +1,33 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
-  <head>
+<title>Play dat Audio!</title> 
+<body> 
 
-    <title>Process dat Audio!</title>
+<button onclick="playVid()" type="button">Play</button>
+<button onclick="pauseVid()" type="button">Pause</button>
 
-  </head>
+<br>
+<br> 
 
-  <body>
-    <h1>Process dat Audio!</h1>
+<audio id="MourningWarbler" width="320" height="176">
+  <source src="MourningWarbler.mp3" type="audio/mpeg">
+  <source src="MourningWarbler.ogg" type="audio/ogg">
+  Sorry, no support for the Web Audio API!
+</audio>
 
-    <button id="play">Play</button>
-    <button id="stop">Stop</button>
-   
-    <pre></pre>
-  </body>
-  <script>
-var context = new webkitAudioContext();
-var analyser = context.createAnalyser();
-var source; 
-var birdaudio = new Audio();   
-birdaudio.src = 'MourningWarbler.mp3';
-birdaudio.controls = true;
-birdaudio.autoplay = true;
-birdaudio.loop = true;
-source = context.createMediaElementSource(birdaudio);
-source.connect(analyser);
-analyser.connect(context.destination);
+<script> 
+var birdaudio = document.getElementById("MourningWarbler"); 
 
-document.getElementById("stop").onclick = function() {
-    birdaudio.pause();
-    birdaudio.currentTime = 0;
-};
+function playAudio() { 
+    birdaudio.play(); 
+} 
 
-document.getElementById("play").onclick = function() {
-    birdaudio.play();
-};
+function pauseAudio() { 
+    birdaudio.pause(); 
+} 
+</script> 
 
+<p>Audio courtesy of the <a href="https://www.macaulaylibrary.org/">Macaulay Library</a>.</p>
 
-  </script>
+</body> 
 </html>
