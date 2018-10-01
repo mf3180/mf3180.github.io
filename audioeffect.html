@@ -35,7 +35,7 @@ var stop = document.querySelector('.stop');
 // Then we put the buffer into the source
 function getData() {
   request = new XMLHttpRequest();
-  request.open('GET', 'viper.ogg', true);
+  request.open('GET', 'MourningWarbler.mp3', true);
   request.responseType = 'arraybuffer';
   request.onload = function() {
     var audioData = request.response;
