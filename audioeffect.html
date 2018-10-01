@@ -6,23 +6,86 @@
 
   <body>
     <h1>Process dat Audio!</h1>
-    <audio controls>  
-      <source src="MourningWarbler.ogg" type="audio/ogg">
-      <source src="MourningWarbler.mp3" type="audio/mp3">   
-    </audio>
-    <pre></pre>
+    <p class="play">Play</p>
+    <p class="stop">Stop</p>
+    <script>
+   
+   (function() {
+    var context, 
+        soundSource, 
+        soundBuffer,
+        url = 'https://github.com/mf3180/mf3180.github.io/blob/master/LincolnsSparrow.mp3';
+
+    // Step 1 - Initialise the Audio Context
+    // There can be only one!
+    function init() {
+        if (typeof AudioContext !== "undefined") {
+            context = new AudioContext();
+        } else if (typeof webkitAudioContext !== "undefined") {
+            context = new webkitAudioContext();
+        } else {
+            throw new Error('AudioContext not supported. :(');
+        }
+    }
+
+    // Step 2: Load our Sound using XHR
+    function startSound() {
+        // Note: this loads asynchronously
+        var request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.responseType = "arraybuffer";
+
+        // Our asynchronous callback
+        request.onload = function() {
+            var audioData = request.response;
+
+            audioGraph(audioData);
+
+
+        };
+
+        request.send();
+    }
+
+    // Finally: tell the source when to start
+    function playSound() {
+        // play the source now
+        soundSource.start(context.currentTime);
+    }
+
+    function stopSound() {
+        // stop the source now
+        soundSource.stop(context.currentTime);
+    }
+
+    // Events for the play/stop bottons
+    document.querySelector('.play').addEventListener('click', startSound);
+    document.querySelector('.stop').addEventListener('click', stopSound);
+
+
+    // This is the code we are interested in
+    function audioGraph(audioData) {
+        // create a sound source
+        soundSource = context.createBufferSource();
+
+        // The Audio Context handles creating source buffers from raw binary
+        context.decodeAudioData(audioData, function(soundBuffer){
+            // Add the buffered data to our object
+            soundSource.buffer = soundBuffer;
+    
+            // Plug the cable from one thing to the other
+            soundSource.connect(context.destination);
+    
+            // Finally
+            playSound(soundSource);
+        }); 
+    }
+
+    init();
+
+
+}());
+
+   	</script>
   </body>
-<script>
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-var myAudio = document.querySelector('audio');
-var pre = document.querySelector('pre');
-var myScript = document.querySelector('script');
-
-var source = audioCtx.createMediaElementSource(myAudio);
-
-var gainNode = audioCtx.createGain();
-
-myAudio.start();
-myAudio.connect(audioCtx.destination);
-</script>
-</html>
+  </html>
