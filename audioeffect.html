@@ -1,20 +1,17 @@
+<!DOCTYPE html>
 
-
-<!DOCTYPE html> 
 <html>
-<title>Play dat Audio!</title> 
-<style>
-.slidecontainer {
-  width: 100%;
-}
-</style>
-<body> 
-
+<title>nah</title>
+<body>
 <div class='controls'>
     <button class="play" disabled>loading...</button>
     <button class="stop" disabled>stop</button>
 </div>
-
+<div class='play-controls'>
+    <label for='loop'>loop
+        <input type='checkbox' name='loop' class="loop" />
+    </label>
+</div>
 <div class='filter-controls'>
     <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
 
@@ -29,13 +26,18 @@
     <p>filter type</p>
     <select name="filterType" class="filtertype">
         <option value="lowpass">lowpass</option>
-     
+        <option value="highpass">highpass</option>
+        <option value="bandpass">bandpass</option>
+        <option value="lowshelf">lowshelf</option>
+        <option value="highshelf">highshelf</option>
+        <option value="peaking">peaking</option>
+        <option value="notch">notch</option>
+        <option value="allpass">allpass</option>
     </select>
 </div>
-</body> 
+</body>
 <script>
-
-  var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
+    var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     filter = audioContext.createBiquadFilter(),
     sampleURL = 'https://drive.google.com/file/d/1Db-gtIXiNYXC2xaWKHwmVgicxrAQNke1/view?usp=sharing',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
@@ -66,6 +68,10 @@ playButton.onclick = function () {
 
 stopButton.onclick = function () {
     stopSound();
+};
+
+loopButton.onclick = function () {
+    loop = event.target.checked;
 };
 
 filterType.oninput = function () {
@@ -134,6 +140,17 @@ function changeFilterType(type) {
             filterGainSlider.disabled = false;
             break;
         case 'lowpass':
+        case 'highpass':
+        case 'bandpass':
+        case 'notch':
+        case 'allpass':
+            filterGainSlider.disabled = true;
+            filterQSlider.disabled = false;
+            break;
+        case 'lowshelf':
+        case 'highshelf':
+            filterGainSlider.disabled = false;
+            filterQSlider.disabled = true;
             break;
     }
 }
@@ -187,4 +204,3 @@ window.addEventListener('touchstart', function(){
 }, false);
 </script>
 </html>
-
