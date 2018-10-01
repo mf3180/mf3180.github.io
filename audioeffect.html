@@ -1,21 +1,28 @@
 <!DOCTYPE html>
+<html>
+  <head>
 
-  <html>
-<head>
-	
-</head>
-<body> 
+  </head>
 
-	<script>
-		var audioctx = new (window.AudioContext || window.webkitAudioContext);
-		var warbler = new Audio(MourningWarbler.mp3)
-		
-		warbler.play();
+  <body>
+    <h1>Process dat Audio!</h1>
+    <audio controls>  
+      <source src="MourningWarbler.ogg" type="audio/ogg">
+      <source src="MourningWarbler" type="audio/mp3">   
+    </audio>
+    <pre></pre>
+  </body>
+<script>
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var myAudio = document.querySelector('audio');
+var pre = document.querySelector('pre');
+var myScript = document.querySelector('script');
 
+var source = audioCtx.createMediaElementSource(myAudio);
 
-</script>
-</body>
+var gainNode = audioCtx.createGain();
+
+myAudio.start();
+myAudio.connect(audioCtx.destination);
+</script>destination
 </html>
-
-
-
