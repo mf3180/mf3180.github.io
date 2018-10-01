@@ -1,91 +1,90 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
 
+    <title>AudioContext states demo</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
 
   <body>
-    <h1>Process dat Audio!</h1>
-    <p class="play">Play</p>
-    <p class="stop">Stop</p>
-    <script>
-   
-   (function() {
-    var context, 
-        soundSource, 
-        soundBuffer,
-        url = 'https://github.com/mf3180/mf3180.github.io/blob/master/LincolnsSparrow.mp3';
 
-    // Step 1 - Initialise the Audio Context
-    // There can be only one!
-    function init() {
-        if (typeof AudioContext !== "undefined") {
-            context = new AudioContext();
-        } else if (typeof webkitAudioContext !== "undefined") {
-            context = new webkitAudioContext();
-        } else {
-            throw new Error('AudioContext not supported. :(');
-        }
+  <h1>AudioContext states demo</h1>
+
+  <button>Create context</button>
+  <button>Suspend context</button>
+  <button>Stop context</button>
+
+  <p>Current context time: No context exists.</p>
+
+  
+  <script>
+  var audioCtx;
+  var startBtn = document.querySelector('button:nth-of-type(1)');
+  var susresBtn = document.querySelector('button:nth-of-type(2)');
+  var stopBtn = document.querySelector('button:nth-of-type(3)');
+  var timeDisplay = document.querySelector('p');
+  susresBtn.setAttribute('disabled','disabled');
+  stopBtn.setAttribute('disabled','disabled');
+  startBtn.onclick = function() {
+    startBtn.setAttribute('disabled','disabled');
+    susresBtn.removeAttribute('disabled');
+    stopBtn.removeAttribute('disabled');
+    // create web audio api context
+    AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+    // create Oscillator and gain node
+    var oscillator = audioCtx.createOscillator();
+    var gainNode = audioCtx.createGain();
+    // connect oscillator to gain node to speakers
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    // Make noise, sweet noise
+    oscillator.type = 'square';
+    oscillator.frequency.value = 100; // value in hertz
+    oscillator.start(0);
+    gainNode.gain.value = 0.1;
+    // report the state of the audio context to the
+    // console, when it changes
+    audioCtx.onstatechange = function() {
+      console.log(audioCtx.state);
     }
-
-    // Step 2: Load our Sound using XHR
-    function startSound() {
-        // Note: this loads asynchronously
-        var request = new XMLHttpRequest();
-        request.open("GET", url, true);
-        request.responseType = "arraybuffer";
-
-        // Our asynchronous callback
-        request.onload = function() {
-            var audioData = request.response;
-
-            audioGraph(audioData);
-
-
-        };
-
-        request.send();
+  }
+  // suspend/resume the audiocontext
+  susresBtn.onclick = function() {
+    if(audioCtx.state === 'running') {
+      audioCtx.suspend().then(function() {
+        susresBtn.textContent = 'Resume context';
+      });
+    } else if(audioCtx.state === 'suspended') {
+      audioCtx.resume().then(function() {
+        susresBtn.textContent = 'Suspend context';
+      });  
     }
-
-    // Finally: tell the source when to start
-    function playSound() {
-        // play the source now
-        soundSource.start(context.currentTime);
+  }
+  // close the audiocontext
+  stopBtn.onclick = function() {
+    audioCtx.close().then(function() {
+      startBtn.removeAttribute('disabled');
+      susresBtn.setAttribute('disabled','disabled');
+      stopBtn.setAttribute('disabled','disabled');
+    });
+  }
+  function displayTime() {
+    if(audioCtx && audioCtx.state !== 'closed') {
+      timeDisplay.textContent = 'Current context time: ' + audioCtx.currentTime.toFixed(3);
+    } else {
+      timeDisplay.textContent = 'Current context time: No context exists.'
     }
-
-    function stopSound() {
-        // stop the source now
-        soundSource.stop(context.currentTime);
-    }
-
-    // Events for the play/stop bottons
-    document.querySelector('.play').addEventListener('click', startSound);
-    document.querySelector('.stop').addEventListener('click', stopSound);
-
-
-    // This is the code we are interested in
-    function audioGraph(audioData) {
-        // create a sound source
-        soundSource = context.createBufferSource();
-
-        // The Audio Context handles creating source buffers from raw binary
-        context.decodeAudioData(audioData, function(soundBuffer){
-            // Add the buffered data to our object
-            soundSource.buffer = soundBuffer;
-    
-            // Plug the cable from one thing to the other
-            soundSource.connect(context.destination);
-    
-            // Finally
-            playSound(soundSource);
-        }); 
-    }
-
-    init();
-
-
-}());
-
-   	</script>
+    requestAnimationFrame(displayTime);
+  }
+  displayTime();
+  </script>
   </body>
-  </html>
+</html>
