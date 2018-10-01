@@ -18,6 +18,7 @@
 </body>
 	<script>
 		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		var myAudio = document.querySelector('audio');
 
 //set up the different audio nodes we will use for the app
 var analyser = audioCtx.createAnalyser();
@@ -28,7 +29,7 @@ var convolver = audioCtx.createConvolver();
 
 // connect the nodes together
 
-source = audioCtx.createMediaStreamSource(stream);
+source = audioCtx.createmediaElement(myAudio);
 source.connect(analyser);
 analyser.connect(distortion);
 distortion.connect(biquadFilter);
