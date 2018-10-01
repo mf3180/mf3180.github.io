@@ -19,8 +19,7 @@
     <button class="play">Play</button>
    
     <pre></pre>
-  </body>
-<script>
+  <script>
 // define online and offline audio context
 var audioCtx = new AudioContext();
 var offlineCtx = new OfflineAudioContext(2,44100*40,44100);
@@ -67,4 +66,6 @@ getData();
 // dump script to pre element
 pre.innerHTML = myScript.innerHTML;
   </script>
+  </body>
+
 </html>
