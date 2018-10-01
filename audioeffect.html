@@ -1,4 +1,4 @@
-<!--CODE HEAVILY ADAPTED/SOURCED FROM https://jsfiddle.net/KeithMcMillenInstruments/nLwLthj0/?utm_source=website&utm_medium=embed&utm_campaign=nLwLthj0 -->
+<!--CODE ADAPTED/SOURCED FROM https://jsfiddle.net/KeithMcMillenInstruments/nLwLthj0/?utm_source=website&utm_medium=embed&utm_campaign=nLwLthj0-->
 
 
 <!DOCTYPE html>
@@ -16,8 +16,8 @@
     <br>
 
 <div class='controls'>
-    <button class="play" disabled>loading...</button>
-    <button class="stop" disabled>stop</button>
+    <button class="play" disabled>Loading...</button>
+    <button class="stop" disabled>Stop</button>
 </div>
 
 <div class='filter-controls'>
@@ -27,10 +27,11 @@
     </label>
     
     <br>
+
     
-    <p>filter type</p>
+    <p>Filter Type</p>
     <select name="filterType" class="filtertype">
-        <option value="lowpass">lowpass</option>
+        <option value="lowpass">Lowpass</option>
     </select>
 </div>
 
@@ -51,17 +52,11 @@
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
-    loopButton = document.querySelector('.loop'),
 
     filterType = document.querySelector('.filtertype'),
     filterFreq = document.querySelector('.freq'),
     filterFreqSlider = document.querySelector('.filter-slider'),
 
-    filterQ = document.querySelector('.filter-q-value'),
-    filterQSlider = document.querySelector('.filter-q-slider'),
-
-    filterGain = document.querySelector('.filter-gain-value'),
-    filterGainSlider = document.querySelector('.filter-gain-slider');
 
 // load our sound
 init();
@@ -151,16 +146,12 @@ function UI(state){
             playButton.disabled = true;
             stopButton.disabled = false;
             filterFreqSlider.disabled = false;
-            filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
-            break;
+        break;
         case 'stop':
             playButton.disabled = false;
             stopButton.disabled = true;
             filterFreqSlider.disabled = true;
-            filterQSlider.disabled = true;
-            filterGainSlider.disabled = true;
-            break;
+        break;
     }
 }
 
