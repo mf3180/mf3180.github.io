@@ -1,4 +1,4 @@
-<!--CODE HEAVILY ADAPTED/SOURCED FROM https://jsfiddle.net/KeithMcMillenInstruments/nLwLthj0/?utm_source=website&utm_medium=embed&utm_campaign=nLwLthj0-->
+<!--CODE HEAVILY ADAPTED/SOURCED FROM https://jsfiddle.net/KeithMcMillenInstruments/nLwLthj0/?utm_source=website&utm_medium=embed&utm_campaign=nLwLthj0 -->
 
 
 <!DOCTYPE html>
@@ -10,24 +10,24 @@
     
     <br>
     
-    <h3>Experiment with applying a lowpass filter to the birdsong of a Mourning Warbler!</h3>
+    <h3>Experiment with applying a lowpass filter to the birdsong!</h3>
 
     <br>
     <br>
 
-<div class='play/pause'>
+<div class='controls'>
     <button class="play" disabled>loading...</button>
     <button class="stop" disabled>stop</button>
 </div>
 
-<div class='filter frequency'>
+<div class='filter-controls'>
     <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
 
         <input class='filter-slider' name='filterFreq' type='range' min='0' max='20000' step='10' value='2500' disabled />
     </label>
     
     <br>
-
+    
     <p>filter type</p>
     <select name="filterType" class="filtertype">
         <option value="lowpass">lowpass</option>
@@ -47,21 +47,27 @@
 <script>
     var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     filter = audioContext.createBiquadFilter(),
-    BIRDAUDIO = 'MourningWarbler.mp3',
+    sampleURL = 'MourningWarbler.mp3',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
+    loopButton = document.querySelector('.loop'),
 
     filterType = document.querySelector('.filtertype'),
     filterFreq = document.querySelector('.freq'),
     filterFreqSlider = document.querySelector('.filter-slider'),
 
+    filterQ = document.querySelector('.filter-q-value'),
+    filterQSlider = document.querySelector('.filter-q-slider'),
+
+    filterGain = document.querySelector('.filter-gain-value'),
+    filterGainSlider = document.querySelector('.filter-gain-slider');
 
 // load our sound
 init();
 
 function init() {
-    loadSound(BIRDAUDIO);
+    loadSound(sampleURL);
 }
 
 playButton.onclick = function () {
@@ -110,11 +116,16 @@ function setupSound() {
 // play sound and enable / disable buttons
 function playSound() {
     setupSound();
+    UI('play');
     sound.start(0);
+    sound.onended = function () {
+        UI('stop');
+    }
 }
 
 // stop sound and enable / disable buttons
 function stopSound() {
+    UI('stop');
     sound.stop(0);
 }
 
@@ -131,6 +142,26 @@ function changeFilterType(type) {
 function changeFilterFreq(freq) {
     filter.frequency.value = freq;
     filterFreq.innerHTML = freq + 'Hz';
+}
+
+
+function UI(state){
+    switch(state){
+        case 'play':
+            playButton.disabled = true;
+            stopButton.disabled = false;
+            filterFreqSlider.disabled = false;
+            filterQSlider.disabled = false;
+            filterGainSlider.disabled = false;
+            break;
+        case 'stop':
+            playButton.disabled = false;
+            stopButton.disabled = true;
+            filterFreqSlider.disabled = true;
+            filterQSlider.disabled = true;
+            filterGainSlider.disabled = true;
+            break;
+    }
 }
 
 </script>
