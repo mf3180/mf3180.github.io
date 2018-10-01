@@ -5,39 +5,13 @@
 	
 </head>
 <body> 
-	<h1> Process that Birdsong!</h1>
-	
-	<br>
-	<br>
 
-	<audio controls>
-		<source src="MourningWarbler.mp3" type="audio/mpeg">
-		<source src="MournignWarbler.ogg" type="audio/ogg">
-			Your browser doesn't support the audio element.
-		</audio>
 </body>
 	<script>
-		var audiocontext = (window.AudioContext || window.webkitAudioContext)();
-		if (audiocontext) {
-			//this means we can use the Web Audio API
-		} else {
-			//this means it's not available
-		}
-
-		window.addEventListener('load', onLoad, false);
-
-		function onLoad() {
-			var audio = new Audio();
-			source = context.createMediaElementSource(audio);
-			var filter = context.createBiquadFilter();
-			filter.type = filter.LOWPASS;
-			filter.frequency.value = 880;
-
-			source.connect(this.filter);
-			filter.connect(context.destination);
-			audio.src = 'MourningWarbler.mp3';
-			audio.play();
-		}
+		var audioctx = new (window.AudioContext || window.webkitAudioContext);
+		var warbler = new Audio(MourningWarbler.mp3)
+		
+		warbler.play();
 
 
 </script>
