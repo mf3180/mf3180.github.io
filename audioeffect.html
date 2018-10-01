@@ -1,4 +1,3 @@
-<!--This code is adapted and modified from https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_av_met_play_pause-->
 
 
 <!DOCTYPE html> 
@@ -11,59 +10,181 @@
 </style>
 <body> 
 
-<div class="play/pause">
-  <button onclick="playAudio()" type="button">Play</button>
-  <button onclick="pauseAudio()" type="button">Pause</button>
+<div class='controls'>
+    <button class="play" disabled>loading...</button>
+    <button class="stop" disabled>stop</button>
 </div>
 
-<br>
-<br> 
+<div class='filter-controls'>
+    <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
 
-<div class='display'>
-    
-    <label for='detune'>Detune <span class='detune'>0 cents</span>
-    <input class='detune-slider' name='detune' type='range' min='-1000' max='1000' step='1' value='0' />
+        <input class='filter-slider' name='filterFreq' type='range' min='0' max='20000' step='10' value='2500' disabled />
     </label>
+    <label>quality (Q) value <span class='filter-q-value'>1</span> 
+        <input class="filter-q-slider" type="range" min=".0001" max="10" step=".0005" value="1" disabled/>
+    </label>
+    <label>filter gain value <span class='filter-gain-value'>0</span> 
+        <input class="filter-gain-slider" type="range" min="-40" max="40" step="1" value="0" disabled/>
+    </label>
+    <p>filter type</p>
+    <select name="filterType" class="filtertype">
+        <option value="lowpass">lowpass</option>
+     
+    </select>
 </div>
-
-
-<!--<div class="slidecontainer">
-  <p>This is a slider</p>
-  <input type="range" min="1" max="100" value="50" id="myRange">
-</div>-->
-
-
-<audio id="MourningWarbler">
-  <source src="MourningWarbler.mp3" type="audio/mpeg">
-  <source src="MourningWarbler.ogg" type="audio/ogg">
-  Sorry, no support for the Web Audio API!
-</audio>
-
-<script> 
-var birdaudio = document.getElementById("MourningWarbler"); 
-var detuneSlider = document.querySelector('.detune-slider');
-var detuneDisplay = document.querySelector('.detune');
-
-function playAudio() { 
-    birdaudio.play(); 
-} 
-
-function pauseAudio() { 
-    birdaudio.pause(); 
-} 
-
-detuneSlider.oninput = function() {
-  changeDetune(detuneSlider.value);
-}
-
-function changeDetune(cents) {
-  birdaudio.detune.value = cents;
-  detuneDisplay.innerHTML = cents + 'cents';
-}
-
-</script> 
-
-<p>Audio courtesy of the <a href="https://www.macaulaylibrary.org/">Macaulay Library</a>.</p>
-
 </body> 
+<script>
+
+  var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
+    filter = audioContext.createBiquadFilter(),
+    sampleURL = 'https://github.com/mf3180/mf3180.github.io/blob/master/MourningWarbler.mp3',
+    sampleBuffer, sound, playButton = document.querySelector('.play'),
+    stopButton = document.querySelector('.stop'),
+    loop = false,
+    loopButton = document.querySelector('.loop'),
+
+    filterType = document.querySelector('.filtertype'),
+    filterFreq = document.querySelector('.freq'),
+    filterFreqSlider = document.querySelector('.filter-slider'),
+
+    filterQ = document.querySelector('.filter-q-value'),
+    filterQSlider = document.querySelector('.filter-q-slider'),
+
+    filterGain = document.querySelector('.filter-gain-value'),
+    filterGainSlider = document.querySelector('.filter-gain-slider');
+
+// load our sound
+init();
+
+function init() {
+    loadSound(sampleURL);
+}
+
+playButton.onclick = function () {
+    playSound();
+};
+
+stopButton.onclick = function () {
+    stopSound();
+};
+
+filterType.oninput = function () {
+    changeFilterType(filterType.value);
+};
+
+filterFreqSlider.oninput = function () {
+    changeFilterFreq(filterFreqSlider.value);
+};
+
+filterQSlider.oninput = function () {
+    changeFilterQ(filterQSlider.value);
+};
+
+filterGainSlider.oninput = function () {
+    changeFilterGain(event.target.value);
+};
+
+// function to load sounds via AJAX
+function loadSound(url) {
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+
+    request.onload = function () {
+        audioContext.decodeAudioData(request.response, function (buffer) {
+            sampleBuffer = buffer;
+            playButton.disabled = false;
+            playButton.innerHTML = 'play';
+        });
+    };
+
+    request.send();
+}
+// setup sound, loop, and connect to destination
+function setupSound() {
+    sound = audioContext.createBufferSource();
+    sound.buffer = sampleBuffer;
+    sound.loop = loop;
+    sound.connect(filter);
+    filter.connect(audioContext.destination);
+}
+
+// play sound and enable / disable buttons
+function playSound() {
+    setupSound();
+    UI('play');
+    sound.start(0);
+    sound.onended = function () {
+        UI('stop');
+    }
+}
+
+// stop sound and enable / disable buttons
+function stopSound() {
+    UI('stop');
+    sound.stop(0);
+}
+
+// change filter type and enable / disable controls depending on filter type
+function changeFilterType(type) {
+    filter.type = type;
+    switch (type) {
+        case 'peaking':
+            filterQSlider.disabled = false;
+            filterGainSlider.disabled = false;
+            break;
+        case 'lowpass':
+            break;
+    }
+}
+
+// change filter frequency and update display 
+function changeFilterFreq(freq) {
+    filter.frequency.value = freq;
+    filterFreq.innerHTML = freq + 'Hz';
+}
+
+// change filter Q and update display
+function changeFilterQ(Q) {
+    filter.Q.value = Q;
+    filterQ.innerHTML = Q;
+}
+
+// change filter Gain and update display
+function changeFilterGain(gain) {
+    filter.gain.value = gain;
+    filterGain.innerHTML = gain + 'dB';
+}
+
+function UI(state){
+    switch(state){
+        case 'play':
+            playButton.disabled = true;
+            stopButton.disabled = false;
+            filterFreqSlider.disabled = false;
+            filterQSlider.disabled = false;
+            filterGainSlider.disabled = false;
+            break;
+        case 'stop':
+            playButton.disabled = false;
+            stopButton.disabled = true;
+            filterFreqSlider.disabled = true;
+            filterQSlider.disabled = true;
+            filterGainSlider.disabled = true;
+            break;
+    }
+}
+
+
+/* ios enable sound output */
+window.addEventListener('touchstart', function(){
+    //create empty buffer
+    var buffer = audioContext.createBuffer(1, 1, 22050);
+    var source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+}, false);
+</script>
 </html>
+
