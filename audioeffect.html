@@ -22,7 +22,7 @@
 			//this means we can use the Web Audio API
 		} else {
 			//this means it's not available
-		};
+		}
 
 		window.addEventListener('load', onLoad, false);
 
@@ -35,7 +35,7 @@
 
 			source.connect(this.filter);
 			filter.connect(context.destination);
-			audio.src = 'MourningWarbler.mp3'
+			audio.src = 'MourningWarbler.mp3';
 			audio.play();
 		}
 
