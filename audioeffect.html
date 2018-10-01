@@ -17,14 +17,38 @@
 		</audio>
 </body>
 	<script>
-		var audiocontext  = new (window.AudioContext || window.webkitAudioContext)();
-		var myAudio = document.querySelector('audio');
+		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-		var source = audiocontext.createMediaElementSource(myAudio);
-		var gainNode = audiocontext.createGain();
+//set up the different audio nodes we will use for the app
+var analyser = audioCtx.createAnalyser();
+var distortion = audioCtx.createWaveShaper();
+var gainNode = audioCtx.createGain();
+var biquadFilter = audioCtx.createBiquadFilter();
+var convolver = audioCtx.createConvolver();
 
-		source.connect(gainNode);
-		gainNode.connect(audiocontext.destination);
+// connect the nodes together
+
+source = audioCtx.createMediaStreamSource(stream);
+source.connect(analyser);
+analyser.connect(distortion);
+distortion.connect(biquadFilter);
+biquadFilter.connect(convolver);
+convolver.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+
+// Manipulate the Biquad filter
+
+biquadFilter.type = "lowshelf";
+biquadFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+biquadFilter.gain.setValueAtTime(25, audioCtx.currentTime);
+		//var audiocontext  = new (window.AudioContext || window.webkitAudioContext)();
+		//var myAudio = document.querySelector('audio');
+
+		//var source = audiocontext.createMediaElementSource(myAudio);
+		//var gainNode = audiocontext.createGain();
+
+		//source.connect(gainNode);
+		//gainNode.connect(audiocontext.destination);
 
 
 </script>
