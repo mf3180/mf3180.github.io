@@ -1,15 +1,39 @@
+<!--This code is adapted and modified from https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_av_met_play_pause-->
+
+
 <!DOCTYPE html> 
 <html>
 <title>Play daaat Audio!</title> 
+<style>
+.slidecontainer {
+  width: 100%;
+}
+</style>
 <body> 
 
-<button onclick="playAudio()" type="button">Play</button>
-<button onclick="pauseAudio()" type="button">Pause</button>
+<div class="play/pause">
+  <button onclick="playAudio()" type="button">Play</button>
+  <button onclick="pauseAudio()" type="button">Pause</button>
+</div>
 
 <br>
 <br> 
 
-<audio id="MourningWarbler" width="320" height="176">
+<div class='display'>
+    
+    <label for='detune'>Detune <span class='detune'>0 cents</span>
+    <input class='detune-slider' name='detune' type='range' min='-1000' max='1000' step='1' value='0' />
+    </label>
+</div>
+
+
+<!--<div class="slidecontainer">
+  <p>This is a slider</p>
+  <input type="range" min="1" max="100" value="50" id="myRange">
+</div>-->
+
+
+<audio id="MourningWarbler">
   <source src="MourningWarbler.mp3" type="audio/mpeg">
   <source src="MourningWarbler.ogg" type="audio/ogg">
   Sorry, no support for the Web Audio API!
@@ -17,6 +41,8 @@
 
 <script> 
 var birdaudio = document.getElementById("MourningWarbler"); 
+var detuneSlider = document.querySelector('.detune-slider');
+var detuneDisplay = document.querySelector('.detune');
 
 function playAudio() { 
     birdaudio.play(); 
@@ -25,6 +51,16 @@ function playAudio() {
 function pauseAudio() { 
     birdaudio.pause(); 
 } 
+
+detuneSlider.oninput = function() {
+  changeDetune(detuneSlider.value);
+}
+
+function changeDetune(cents) {
+  birdaudio.detune.value = cents;
+  detuneDisplay.innerHTML = cents + 'cents';
+}
+
 </script> 
 
 <p>Audio courtesy of the <a href="https://www.macaulaylibrary.org/">Macaulay Library</a>.</p>
