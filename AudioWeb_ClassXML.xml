@@ -1,0 +1,101 @@
+
+<!-- <item>
+        <title>The WAV/MP3 Test</title>
+        <itunes:author>Group One</itunes:author>
+        <itunes:subtitle>Can you tell the difference between a WAV and an MP3 file?</itunes:subtitle>
+        <itunes:summary>NYU students in the Audio for the Web Fall 2018 class test their friends to see if any of them can distinguish between WAV files and lossy compressed MP3 files. </itunes:summary>
+        <itunes:image href="https://66.media.tumblr.com/5728320a25968542ed3f6ff513220451/tumblr_ph2ejlTF8S1wb545bo1_1280.png"/>
+        <enclosure url="https://jdion1234.github.io/FINAL%20PODCAST.mp3" length="5382337" type="audio/mpeg"/>
+        <guid> https://jdion1234.github.io/FINAL%20PODCAST.mp3 </guid>
+        <pubDate>Mon, 29 Oct 2018 16:24:22 GMT-0000(EST)</pubDate>
+        <itunes:duration
+
+</item> 
+ -->
+
+ <!-- ANNIE -->
+<item>
+    <title>The WAV/MP3 Test</title>
+    <link>
+        https://jdion1234.github.io/FINAL%20PODCAST.mp3
+    </link>
+    <pubDate>Mon, 29 Oct 2018 16:24:22 GMT-0000(EST)</pubDate>
+    <description>
+        NYU students in the Audio for the Web Fall 2018 class test their friends to see if any of them can distinguish between WAV files and lossy compressed MP3 files.
+    </description>
+    <enclosure url="https://jdion1234.github.io/FINAL%20PODCAST.mp3" length="5382337" type="audio/mpeg"/>
+	<guid>
+        https://jdion1234.github.io/FINAL%20PODCAST.mp3
+    </guid>
+    <itunes:duration>04:58</itunes:duration>
+    <itunes:summary>
+        NYU students in the Audio for the Web Fall 2018 class test their friends to see if any of them can distinguish between WAV files and lossy compressed MP3 files.
+    </itunes:summary>
+    <itunes:image href="https://66.media.tumblr.com/5728320a25968542ed3f6ff513220451/tumblr_ph2ejlTF8S1wb545bo1_1280.png"/>
+    <itunes:keywords>
+        audio,musictech,wav,mp3,podcast
+    </itunes:keywords>
+    <itunes:explicit>no</itunes:explicit>
+</item>
+
+ <!-- JAYE-->
+
+<item>
+    <title>The Mix: Mixing Basics</title>
+    <link>
+       https://jayesosa.github.io/AudioWeb_TheMix.mp3
+    </link>
+    <pubDate>Mon, 29 Oct 2018 16:24:22 GMT-0000(EST)</pubDate>
+    <description>
+        In this episode of The Mix, we sit down with two mixing engineers and NYU graduate Music Technology students on their personal mixing techniques. The mixing engineers featured are Fermin and Jonathan. Recording engineered by Fermin, Jonathan, and Jaye. Mixing and Editing by Jaye. Original music by Jaye. 
+    </description>
+    <enclosure url="https://jayesosa.github.io/AudioWeb_TheMix.mp3" length="12014528" type="audio/mpeg"/>
+	<guid>
+        https://jayesosa.github.io/AudioWeb_TheMix.mp3
+    </guid>
+    <itunes:duration>05:00</itunes:duration>
+    <itunes:summary>
+        In this episode of The Mix, we sit down with two mixing engineers and NYU graduate Music Technology students on their personal mixing techniques. The mixing engineers featured are Fermin and Jonathan. Recording engineered by Fermin, Jonathan, and Jaye. Mixing and Editing by Jaye. Original music by Jaye. 
+    </itunes:summary>
+    <itunes:image href="https://sosajaye.tumblr.com/image/179499384460"/>
+    <itunes:keywords>
+        mixing,audio,musictech,podcast
+    </itunes:keywords>
+    <itunes:explicit>no</itunes:explicit>
+</item>
+
+ <!-- MADELEINE-->
+
+<item>
+	<title>Sounds of the Subway</title>
+	<link>
+		https://mf3180.github.io/Madeleine_Sarah_AFTW.mp3
+	</link>
+	<pubDate>Mon, 29 Oct 2018 16:24:22 GMT-0000(EST)</pubDate>
+	<description>
+		Have you ever winced in pain when the 6 train screeches by during your morning commute? Have you ever wondered, "How loud really could New York's subways possibly be?"  Madeleine and Sarah take a dive into the wild sonic abyss that is the New York City subway system.
+	</description>
+	<enclosure url="https://mf3180.github.io/Madeleine_Sarah_AFTW.mp3" length="7180974" type="audio/mpeg"/>
+	<guid>
+		https://mf3180.github.io/Madeleine_Sarah_AFTW.mp3
+	</guid>
+	<itunes:duration>05:00</itunes:duration>
+	<itunes:summary>
+		Have you ever winced in pain when the 6 train screeches by during your morning commute? Have you ever wondered, "How loud really could New York's subways possibly be?"  Madeleine and Sarah take a dive into the wild sonic abyss that is the New York City subway system.
+	</itunes:summary>
+	<itunes:image href="linktoimagehere"/>
+	<itunes:keywords>
+		subway,nyc subway,podcast
+	</itunes:keywords>
+	<itunes:explicit>no</itunes:explicit>
+</item>
+
+
+
+
+
+
+
+
+
+
