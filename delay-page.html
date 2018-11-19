@@ -7,24 +7,64 @@
 
 	<br>
 
-	<h3>Experiment with applying a delay effect to the embedded audio.  Use the slider below to play around with the time of the delay and tunezz.</h3>
+	<h3>Experiment with applying a delay effect to the embedded audio.  Use the slider below to play around with the time of the volume, feedback, time, and mix.</h3>
 
 	<br>
 	<br>
 
-	<div>
-		<p>Robyn, "Dancing on My Own"</p>
-		<button class="play-audio">Play</button>
-		<button class="stop-audio">Stop</button>
-		<input type=range" min="0" max="5" value="0" step="0.1">
-	</div>
+                <pre><code class="language-javascript">
 
+var Robyn = new Pizzicato.Sound({
+source: 'file',
+options: { path: './audio/Dancing On My Own.mp3' }
+}, function() {
+	console.log('sound file loaded!');
+});
+
+var delay = new Pizzicato.Effects.Delay({
+    feedback: 0.6,
+    time: 0.4,
+    mix: 0.5
+});
+
+sound.addEffect(delay);
+sound.play();
+                </code></pre>
+
+                <div class="slider-group">
+                    <div class="slider">
+                        <label for="volume-timba">Volume</label>
+                        <input type="range" min="0" max="1" step="0.01" value="1" id="volume-timba" />
+                        <div class="slider-value">1</div>
+                    </div>
+                    <div class="slider">
+                        <label for="delay-feedback">Feedback</label>
+                        <input type="range" min="0" max="1" step="0.01" value="0.6" id="delay-feedback" />
+                        <div class="slider-value">0.6</div>
+                    </div>
+                    <div class="slider">
+                        <label for="delay-time">Time</label>
+                        <input type="range" min="0" max="5" step="0.001" value="0.3" id="delay-time" />
+                        <div class="slider-value">0.3</div>
+                    </div>
+                    <div class="slider">
+                        <label for="delay-mix">Mix</label>
+                        <input type="range" min="0" max="1" step="0.001" value="0.5" id="delay-mix" />
+                        <div class="slider-value">0.5</div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="stop-timba" class="stop action"></button>
+                    <button id="play-timba" class="play action"></button>
+                </div>
 <br>
 <br>
 
 <h3><a href="index.html">Back to Home</a></h3>
 
-<script src=delayeffects.js></script>
+
+<script src="./Pizzicato.js"></script>
 
 </body>
 </html>
