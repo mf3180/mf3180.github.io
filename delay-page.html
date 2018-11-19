@@ -20,9 +20,9 @@
 	<br>
 
 <div class='delay-controls'>
-    <label for='delayTime'>Delay Time: <span class='time'>5 s</span>
+    <label for='delayTime'>Delay Time: <span class='time'>1.0 s</span>
 
-        <input class='delayTime-slider' name='delayTime' type='range' min='0' max='5' step='0.1' value='3.0' disabled/>
+        <input class='delayTime-slider' name='delayTime' type='range' min='0' max='5' step='0.1' value='0.5' disabled/>
     </label>
 
     <!--<p>Filter Type: </p>
@@ -39,50 +39,97 @@
 </body>
 <script>
 
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-window.context = new AudioContext();
+var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
+myDelay = audioContext.createDelay(),
+ROBYN = "Dancing On My Own.mp3",
+sampleBuffers, sound, playButton = document.querySelector('.play'),
+stopButton = document.querySelector('.stop'),
+loop = false,
+loopButton = document.querySelector('.loop');
 
-var RobynBuffer;
-var getRobynBuffer = new XMLHttpRequest();
-getRobynBuffer.open("GET", "https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Dancing%20On%20My%20Own.mp3", true);
+delayTime = document.querySelector('.time');
+delayTimeSlider = document.querySelector('.delayTime-slider');
+
+
+//this function loads the sound
+init();
+
+function init() {
+	loadSound(ROBYN);
+};
+
+playButton.onclick = function () {
+	playSound();
+};
+
+stopButton.onclick = function() {
+	stopSound();
+};
+
+
+//this function loads the sound
+function loadSound(url) {
+	var getRobynBuffer = new XMLHttpRequest();
+getRobynBuffer.open("GET", url, true);
 getRobynBuffer.responseType = "arraybuffer";
 
 getRobynBuffer.onload = function() {
-	context.decodeAudioData(getRobynBuffer.response, function(buffer){
+	audioContext.decodeAudioData(getRobynBuffer.response, function(buffer){
 		RobynBuffer = buffer;
+		playButton.disabled = false;
+		playButton.innerHTML = 'play';
 	});
-}
+};
 
 getRobynBuffer.send();
 
+}
+
+//this function sets up the sound
+function setupRobyn() {
+	sound = audioContext.createBufferSource();
+	sound.buffer = RobynBuffer;
+	sound.loop = loop;
+	sound.connect(delay);
+	delay.connect(audioContext.destination);
+}
+
+//this function plays the audio & enables/disables buttons
 function playRobyn() {
-	var _playRobyn = context.createBufferSource();
-	_playRobyn.buffer = RobynBuffer;
-	_playRobyn.connect(delayOne);
-	_playRobyn.connect(context.destination);
-	_playRobyn.start(context.currentTime);
+	setupRobyn();
+	UI('play');
+	sound.start(0);
+	sound.onended = function () {
+		UI('stop');
+	}
 }
 
-function myDelay(_delayTime, feedback) {
-	var delay = context.createDelay();
-	delay.delayTime.value = _delayTime;
+//this function stops the sound and enables/disables buttons
 
-	var _feedback = context.createGain();
-	_feedback.gain.value = feedback;
-
-	var filter = context.createBiquadFilter();
-	filter.frequency.value = 2000;
-
-	filter.connect(delay);
-
-	delay.connect(_feedback);
-
-	_feedback.connect(filter);
-
-	delay.connect(context.destination);
+function stopSound() {
+	UI('stop');
+	sound.stop(0);
 }
 
-var RobynDelay = myDelay(0.3, 0.2);
-RobynDelay.connect(context.destination);
+function changeDelayTime(time) {
+	delay.time.value = time;
+	delayTime.innerHTML = time + 's';
+}
+
+function UI(state){
+	switch(state){
+		case 'play':
+			playButton.disabled = true;
+			stopButton.disabled = false;
+			delayTimeSlider.disabled = false;
+			break;
+		case 'stop':
+			playButton.disabled = false;
+			stopButton.disabled = true;
+			delayTimeSlider.disabled = true;
+		break;
+	}
+}
+
 </script>
 </html>
