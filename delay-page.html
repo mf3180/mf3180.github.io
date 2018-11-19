@@ -12,123 +12,19 @@
 	<br>
 	<br>
 
-	<div class='controls'>
-		<button class="play" disabled>loading...</button>
-		<button class="stop" disabled>stop</button>
+	<div>
+		<p>Robyn, "Dancing on My Own"</p>
+		<button class="play-audio">Play</button>
+		<button class="stop-audio">Stop</button>
+		<input type=range" min="0" max="5" value="0" step="0.1">
 	</div>
-
-	<br>
-
-<div class='delay-controls'>
-    <label for='delayTime'>Delay Time: <span class='time'>0.4 s</span>
-
-        <input class='delayTime-slider' name='delayTime' type='range' min='0' max='1' step='0.01' value='0.5' disabled/>
-    </label>
-
-  <!--  <p>Delay Type: </p>
-    <select name="range" class="filtertype">
-        <option value="lowpass">Lowpass</option>
-    </select> -->
-</div>
 
 <br>
 <br>
 
 <h3><a href="index.html">Back to Home</a></h3>
 
+<script src=delayeffects.js></script>
+
 </body>
-<script>
-
-var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
-    delay = audioContext.createDelay(),
-    ROBYN = 'Dancing On My Own.mp3',
-    sampleBuffers, sound, playButton = document.querySelector('.play'),
-    stopButton = document.querySelector('.stop'),
-    loop = false,
-    loopButton = document.querySelector('.loop'),
-
-    delayTime = document.querySelector('.time'),
-    delayTimeSlider = document.querySelector('.delayTime-slider'),
-
-    /* filterQ = document.querySelector('.filter-q-value'),
-    filterQSlider = document.querySelector('.filter-q-slider'),
-
-    filterGain = document.querySelector('.filter-gain-value'),
-    filterGainSlider = document.querySelector('.filter-gain-slider');
-	*/
-
-//this function loads the sound
-init();
-
-function init() {
-	loadSound(ROBYN);
-};
-
-playButton.onclick = function () {
-	playSound();
-};
-
-stopButton.onclick = function() {
-	stopSound();
-};
-
-
-//this function loads the sound
-function loadSound(url) {
-	var request = new XMLHttpRequest();
-request.open("GET", url, true);
-request.responseType = "arraybuffer";
-
-request.onload = function() {
-	audioContext.decodeAudioData(request.response, function(buffer){
-		sampleBuffer = buffer;
-		playButton.disabled = false;
-		playButton.innerHTML = 'play';
-	});
-};
-
-request.send();
-
-}
-
-//this function sets up the sound
-function setupSound() {
-	sound = audioContext.createBufferSource();
-	sound.buffer = sampleBuffer;
-	sound.loop = loop;
-	sound.connect(delay);
-	delay.connect(audioContext.destination);
-}
-
-//this function plays the audio & enables/disables buttons
-function playSound() {
-	setupSound();
-	UI('play');
-	sound.start(0);
-	sound.onended = function () {
-		UI('stop');
-	}
-}
-
-//this function stops the sound and enables/disables buttons
-
-function stopSound() {
-	UI('stop');
-	sound.stop(0);
-}
-
-function UI(state){
-	switch(state){
-		case 'play':
-			playButton.disabled = true;
-			stopButton.disabled = false;
-			break;
-		case 'stop':
-			playButton.disabled = false;
-			stopButton.disabled = true;
-		break;
-	}
-}
-
-</script>
 </html>
