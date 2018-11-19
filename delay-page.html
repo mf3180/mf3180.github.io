@@ -7,7 +7,7 @@
 
 	<br>
 
-	<h3>Experiment with applying a delay effect to the embedded audio.  Use the sliders below to play around with the time of the delay, the amount of feedback, and the phase inversion.</h3>
+	<h3>Experiment with applying a delay effect to the embedded audio.  Use the slider below to play around with the time of the delay & tunez.</h3>
 
 	<br>
 	<br>
@@ -20,13 +20,13 @@
 	<br>
 
 <div class='delay-controls'>
-    <label for='delayTime'>Delay Time: <span class='time'>1.0 s</span>
+    <label for='delayTime'>Delay Time: <span class='time'>0.5 s</span>
 
-        <input class='delayTime-slider' name='delayTime' type='range' min='0' max='5' step='0.1' value='0.5' disabled/>
+        <input class='delayTime-slider' name='delayTime' type='range' min='0' max='1' step='0.01' value='0.5' disabled/>
     </label>
 
-    <!--<p>Filter Type: </p>
-    <select name="filterType" class="filtertype">
+  <!--  <p>Delay Type: </p>
+    <select name="range" class="filtertype">
         <option value="lowpass">Lowpass</option>
     </select> -->
 </div>
@@ -40,16 +40,22 @@
 <script>
 
 var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
-myDelay = audioContext.createDelay(),
-ROBYN = "Dancing On My Own.mp3",
-sampleBuffers, sound, playButton = document.querySelector('.play'),
-stopButton = document.querySelector('.stop'),
-loop = false,
-loopButton = document.querySelector('.loop');
+    delay = audioContext.createDelay(),
+    ROBYN = 'Dancing On My Own.mp3',
+    sampleBuffers, sound, playButton = document.querySelector('.play'),
+    stopButton = document.querySelector('.stop'),
+    loop = false,
+    loopButton = document.querySelector('.loop'),
 
-delayTime = document.querySelector('.time');
-delayTimeSlider = document.querySelector('.delayTime-slider');
+    delayTime = document.querySelector('.time'),
+    delayTimeSlider = document.querySelector('.delayTime-slider'),
 
+    /* filterQ = document.querySelector('.filter-q-value'),
+    filterQSlider = document.querySelector('.filter-q-slider'),
+
+    filterGain = document.querySelector('.filter-gain-value'),
+    filterGainSlider = document.querySelector('.filter-gain-slider');
+	*/
 
 //this function loads the sound
 init();
@@ -69,34 +75,34 @@ stopButton.onclick = function() {
 
 //this function loads the sound
 function loadSound(url) {
-	var getRobynBuffer = new XMLHttpRequest();
-getRobynBuffer.open("GET", url, true);
-getRobynBuffer.responseType = "arraybuffer";
+	var request = new XMLHttpRequest();
+request.open("GET", url, true);
+request.responseType = "arraybuffer";
 
-getRobynBuffer.onload = function() {
-	audioContext.decodeAudioData(getRobynBuffer.response, function(buffer){
-		RobynBuffer = buffer;
+request.onload = function() {
+	audioContext.decodeAudioData(request.response, function(buffer){
+		sampleBuffer = buffer;
 		playButton.disabled = false;
 		playButton.innerHTML = 'play';
 	});
 };
 
-getRobynBuffer.send();
+request.send();
 
 }
 
 //this function sets up the sound
-function setupRobyn() {
+function setupSound() {
 	sound = audioContext.createBufferSource();
-	sound.buffer = RobynBuffer;
+	sound.buffer = sampleBuffer;
 	sound.loop = loop;
 	sound.connect(delay);
 	delay.connect(audioContext.destination);
 }
 
 //this function plays the audio & enables/disables buttons
-function playRobyn() {
-	setupRobyn();
+function playSound() {
+	setupSound();
 	UI('play');
 	sound.start(0);
 	sound.onended = function () {
