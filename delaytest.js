@@ -1,0 +1,141 @@
+// define variables
+
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioCtx = new AudioContext();
+
+var synthDelay = audioCtx.createDelay(5.0);
+var kickDelay = audioCtx.createDelay(5.0);
+var snareDelay = audioCtx.createDelay(5.0);
+
+var destination = audioCtx.destination;
+
+// get references to controls
+
+var playSynth = document.querySelector('.play-synth');
+var stopSynth = document.querySelector('.stop-synth');
+var rangeSynth = document.querySelector('.stop-synth + input');
+
+var playKick = document.querySelector('.play-kick');
+var stopKick = document.querySelector('.stop-kick');
+var rangeKick = document.querySelector('.stop-kick + input');
+
+var playSnare = document.querySelector('.play-snare');
+var stopSnare = document.querySelector('.stop-snare');
+var rangeSnare = document.querySelector('.stop-snare + input');
+
+var buffers = [];
+
+// use XHR to load audio tracks, and
+// decodeAudioData to decode them and stick them in buffers.
+// Then we put the buffers into their sources
+
+function getData(track) {
+  var request = new XMLHttpRequest();
+  request.open('GET', track + '.mp3', true);
+  request.responseType = 'arraybuffer';
+
+
+  request.onload = function() {
+    audioCtx.decodeAudioData(request.response, function(buffer) {
+        myBuffer = buffer;
+        buffers.push(myBuffer);
+      },
+
+      function(e){"Error with decoding audio data" + e.err});
+
+  }
+
+  request.send();
+}
+
+// get the three data samples
+
+getData('Teenage color');
+getData('Crimewave');
+getData('Dancing On My Own');
+
+// wire up buttons to stop and play audio.
+// Because buffer sources are only a one shot
+// playing method, you have to create a new one
+// each time you play the sound.
+
+var synthSource;
+
+playSynth.onclick = function() {
+  synthSource = audioCtx.createBufferSource();
+  synthSource.buffer = buffers[2];
+  synthSource.loop = true;
+  synthSource.start();
+  synthSource.connect(synthDelay);
+  synthDelay.connect(destination);
+  this.setAttribute('disabled', 'disabled');
+}
+
+stopSynth.onclick = function() {
+  synthSource.disconnect(synthDelay);
+  synthDelay.disconnect(destination);
+  synthSource.stop();
+  playSynth.removeAttribute('disabled');
+}
+
+var kickSource;
+
+playKick.onclick = function() {
+  kickSource = audioCtx.createBufferSource();
+  kickSource.buffer = buffers[0];
+  kickSource.loop = true;
+  kickSource.start();
+  kickSource.connect(kickDelay);
+  kickDelay.connect(destination);
+  this.setAttribute('disabled', 'disabled');
+}
+
+stopKick.onclick = function() {
+  kickSource.disconnect(kickDelay);
+  kickDelay.disconnect(destination);
+  kickSource.stop();
+  playKick.removeAttribute('disabled');
+}
+
+var snareSource;
+
+playSnare.onclick = function() {
+  snareSource = audioCtx.createBufferSource();
+  snareSource.buffer = buffers[1];
+  snareSource.loop = true;
+  snareSource.start();
+  snareSource.connect(snareDelay);
+  snareDelay.connect(destination);
+  this.setAttribute('disabled', 'disabled');
+}
+
+stopSnare.onclick = function() {
+  snareSource.disconnect(snareDelay);
+  snareDelay.disconnect(destination);
+  snareSource.stop();
+  playSnare.removeAttribute('disabled');
+}
+
+// Control the amount of delay each audio
+// track has before it plays each time
+
+var delay1;
+
+rangeSynth.oninput = function() {
+  delay1 = rangeSynth.value;
+  synthDelay.delayTime.value = delay1;
+}
+
+var delay2;
+
+rangeKick.oninput = function() {
+  var delay2 = rangeKick.value;
+  kickDelay.delayTime.value = delay2;
+}
+
+var delay3;
+
+rangeSnare.oninput = function() {
+  var delay3 = rangeSnare.value;
+  snareDelay.delayTime.value = delay3;
+}
