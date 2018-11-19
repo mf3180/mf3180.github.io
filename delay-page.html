@@ -117,22 +117,15 @@ function stopSound() {
 	sound.stop(0);
 }
 
-function changeDelayTime(time) {
-	delay.time.value = time;
-	delayTime.innerHTML = time + 's';
-}
-
 function UI(state){
 	switch(state){
 		case 'play':
 			playButton.disabled = true;
 			stopButton.disabled = false;
-			delayTimeSlider.disabled = false;
 			break;
 		case 'stop':
 			playButton.disabled = false;
 			stopButton.disabled = true;
-			delayTimeSlider.disabled = true;
 		break;
 	}
 }
