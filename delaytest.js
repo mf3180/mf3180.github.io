@@ -3,9 +3,9 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioCtx = new AudioContext();
 
-var synthDelay = audioCtx.createDelay(5.0);
-var kickDelay = audioCtx.createDelay(5.0);
-var snareDelay = audioCtx.createDelay(5.0);
+var synthDelay = audioCtx.createDelay(10.0);
+var kickDelay = audioCtx.createDelay(10.0);
+var snareDelay = audioCtx.createDelay(10.0);
 
 var destination = audioCtx.destination;
 
