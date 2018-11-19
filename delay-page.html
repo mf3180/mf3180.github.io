@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 
-<html>
+<html class="no-js" lang="">
+<head>
+	<script src=js/vendor/modernizr-2.8.3.min.js"></script>
 <title>Experimenting with Delay Effects</title>
+</head>
 <body>
 	<h1>Experimenting with Delay Effects</h1>
 
@@ -13,6 +16,7 @@
 	<br>
 
                 <pre><code class="language-javascript">
+                	<script>
 
 var Robyn = new Pizzicato.Sound({
 source: 'file',
@@ -29,6 +33,7 @@ var delay = new Pizzicato.Effects.Delay({
 
 sound.addEffect(delay);
 sound.play();
+</script>
                 </code></pre>
 
                 <div class="slider-group">
@@ -62,7 +67,6 @@ sound.play();
 <br>
 
 <h3><a href="index.html">Back to Home</a></h3>
-
 
 <script src="./Pizzicato.js"></script>
 
