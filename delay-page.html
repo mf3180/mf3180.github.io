@@ -37,4 +37,52 @@
 <h3><a href="index.html">Back to Home</a></h3>
 
 </body>
+<script>
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+window.context = new AudioContext();
+
+var RobynBuffer;
+var getRobynBuffer = new XMLHttpRequest();
+getRobynBuffer.open("GET", "https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Dancing%20On%20My%20Own.mp3", true);
+getRobynBuffer.responseType = "arraybuffer";
+
+getRobynBuffer.onload = function() {
+	context.decodeAudioData(getRobynBuffer.response, function(buffer){
+		RobynBuffer = buffer;
+	});
+}
+
+getRobynBuffer.send();
+
+function playRobyn() {
+	var _playRobyn = context.createBufferSource();
+	_playRobyn.buffer = RobynBuffer;
+	_playRobyn.connect(delayOne);
+	_playRobyn.connect(context.destination);
+	_playRobyn.start(context.currentTime);
+}
+
+function myDelay(_delayTime, feedback) {
+	var delay = context.createDelay();
+	delay.delayTime.value = _delayTime;
+
+	var _feedback = context.createGain();
+	_feedback.gain.value = feedback;
+
+	var filter = context.createBiquadFilter();
+	filter.frequency.value = 2000;
+
+	filter.connect(delay);
+
+	delay.connect(_feedback);
+
+	_feedback.connect(filter);
+
+	delay.connect(context.destination);
+}
+
+var RobynDelay = myDelay(0.3, 0.2);
+RobynDelay.connect(context.destination);
+</script>
 </html>
