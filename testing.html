@@ -2,13 +2,22 @@
 <html>
 <body>
   <h1>Delay with Feedback and more</h1>
+
+<br>
+<br>
+
+<div class="controls">
+    <button class="play" disabled>loading...</button>
+    <button class="stop" disabled>stop</button>
+        </div>
+
 <script>
 var audioContext = new(window.AudioContext || window.webkitAudioContext)();
 var soundAudio = 'Crimewave.mp3';
 var sampleBuffers;
 var sound;
-var playButton = document.querySelector('.play');
-var stopButton = document.querySelector('.stop');
+var playButton = document.querySelector(".play");
+var stopButton = document.querySelector(".stop");
 
 //this function loads the sound
 init();
@@ -69,14 +78,5 @@ function stopSound() {
 	sound.stop(0);
 }
 </script>
-<br>
-<br>
-
-<div class="controls">
-    <button class="play" disabled>loading...</button>
-    <button class="stop" disabled>stop</button>
-        </div>
-
-
 </body>
 </html>
