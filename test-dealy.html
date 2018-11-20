@@ -176,12 +176,13 @@ function setupSound() {
 function playSound() {
   setupSound();
   source.start();
-  //sound.start(0);
+  sound.start(0);
 }
 
 //this function stops the sound and enables/disables buttons
 
 function stopSound() {
+  source.stop();
   sound.stop(0);
 }
 </script>
