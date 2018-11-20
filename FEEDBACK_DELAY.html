@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<title>Feedback Effect</title>
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+
+<body>
+	<h1>Tone JS Ping Pong Effect</h1>
+
+	<script src="Tone.min.js"></script>
+	<script>
+		var playbutton = document.getElementById("play");
+		playbutton.addEventListener("click", PingPongDelay);
+		var pingPong = new Tone.PingPongDelay().toMaster();
+
+
+		var stopbutton = document.getElementById("stop");
+		stopbutton.addEventListener("click", PingPongStop);
+
+
+		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		function PingPongDelay() {
+			player.start();
+			player.connect(pingPong);	
+
+		}
+		function PingPongStop() {
+			player.stop();
+			player.disconnect(pingPong);
+		}
+
+
+
+	</script>
+
+
+</body>
+</html>         
