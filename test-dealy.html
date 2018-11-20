@@ -150,11 +150,10 @@ function loadSound() {
 
     audioContext.decodeAudioData(request.response, function(buffer){
       sampleBuffer = buffer;
-      source.connect(audioCtx.destination);
       playButton.innerHTML = 'play';
     });
   };
-  setupSound();
+  
   request.send();
 }
 
@@ -169,7 +168,7 @@ function setupSound() {
 
 //this function plays the audio & enables/disables buttons
 function playSound() {
-  loadSound();
+  setupSound();
   sound.start(0);
 }
 
