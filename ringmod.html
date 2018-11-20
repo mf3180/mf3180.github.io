@@ -9,7 +9,7 @@
 
 	<br>
 
-	<h3>Experiment with applying a ring mode effect to the embedded audio.  Use the slider below to play around. </h3>
+	<h3>Experiment with applying a ring mode effect to the embedded audio.  Use the slider below to play around!. </h3>
 
 	<br>
 	<br>
@@ -24,12 +24,12 @@ var ringCarrier = wac.createOscillator();
 ringCarrier.type = ringCarrier.SINE;
 ringCarrier.frequency.setValueAtTime(2500, 0);
 
-var url = "Ring_Modulation-Original_sample.ogg";
+var url = "Crimewave.mp3";
 
 var mediaElement = document.createElement("audio");
 mediaElement.setAttribute("id", "audioElement");
 // mediaElement.setAttribute("src", url);                                                                                                                                                 
-mediaElement.setAttribute("src", "Ring_Modulation-Original_sample.ogg");
+mediaElement.setAttribute("src", "Crimewave.mp3");
 
 var sourceNode = wac.createMediaElementSource(mediaElement);
 
