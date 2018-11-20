@@ -118,7 +118,8 @@ source.start();
 
 <script>
 var audioContext = new(window.AudioContext || window.webkitAudioContext)();
-
+var delay = audioContext.createDelay(3.0);
+var source;
 var sampleBuffers;
 var sound;
 var playButton = document.querySelector(".play");
@@ -164,13 +165,18 @@ function setupSound() {
   sound = audioContext.createBufferSource();
   sound.buffer = sampleBuffer;
   sound.connect(audioContext.destination);
+  source = audioContext.createBufferSource();
+  source.buffer = sampleBuffer;
+  source.connect(delay);
+  delay.connect(destination);
   
 }
 
 //this function plays the audio & enables/disables buttons
 function playSound() {
   setupSound();
-  sound.start(0);
+  source.start();
+  //sound.start(0);
 }
 
 //this function stops the sound and enables/disables buttons
