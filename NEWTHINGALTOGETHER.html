@@ -1,37 +1,28 @@
-
 <!DOCTYPE html>
 
 <html>
 
-<title>New Thing</title>
+<title>Reverb Effect</title>
+<button id="play">Play</button>
 
 <body>
-	<h1>Pizzicato JS Dub Delay</h1>
+	<h1>Tone JS Reverb Effect</h1>
 
-	<br>
+	<script src="Tone.min.js"></script>
+	<script>
+		var playbutton = document.getElementById("play");
+		playbutton.addEventListener("click", reverb);
+		var freeverb = new Tone.Freeverb().toMaster();
 
-	<h3>Hopefully this works </h3>
 
-	<br>
-	<br>
+		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		function reverb() {
+			player.start();
+			player.connect(freeverb);			
+		}
 
-	<script src="Pizzicato.min.js"></script>
-	<script> 
-var sound = new Pizzicato.Sound('Crimewave.mp3', function() {
-	sound.play();
-});
+	</script>
 
-	var dubDelay = new Pizzicato.Effects.DubDelay({
-    feedback: 0.6,
-    time: 0.7,
-    mix: 0.5,
-    cutoff: 700
-});
-
-sound.addEffect(dubDelay);
-sound.play();
-
-</script>
 
 </body>
 </html>         
