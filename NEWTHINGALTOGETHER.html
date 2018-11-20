@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<title>New Thing</title>
+
+<body>
+	<h1>Pizzicato JS Dub Delay</h1>
+
+	<br>
+
+	<h3>Hopefully this works </h3>
+
+	<br>
+	<br>
+
+	<script src="Pizzicato.min.js"></script>
+	<script> 
+var sound = new Pizzicato.Sound('/Users/madeleineflieger/Music/iTunes/iTunes Media/Music/Crystal Castles/Crystal Castles/Crimewave.mp3', function() {
+	sound.play();
+});
+
+	var dubDelay = new Pizzicato.Effects.DubDelay({
+    feedback: 0.6,
+    time: 0.7,
+    mix: 0.5,
+    cutoff: 700
+});
+
+sound.addEffect(dubDelay);
+sound.play();
+
+</script>
+
+</body>
+</html>         
