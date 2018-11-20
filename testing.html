@@ -7,8 +7,8 @@
 <br>
 
 <div class="controls">
-    <button class="play" disabled>loading...</button>
-    <button class="stop" disabled>stop</button>
+    <button class="play">loading...</button>
+    <button class="stop">stop</button>
         </div>
 
 <script>
@@ -48,7 +48,7 @@ function loadSound(url) {
 			playButton.innerHTML = 'play';
 		});
 	};
-
+	setupSound();
 	request.send();
 }
 
