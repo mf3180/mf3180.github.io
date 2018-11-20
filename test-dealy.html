@@ -118,7 +118,7 @@ source.start();
 
 <script>
 var audioContext = new(window.AudioContext || window.webkitAudioContext)();
-var delay = audioContext.createDelay(3.0);
+var delay = audioContext.createDelay(10.0);
 var source;
 var sampleBuffers;
 var sound;
@@ -165,6 +165,7 @@ function setupSound() {
   sound = audioContext.createBufferSource();
   sound.buffer = sampleBuffer;
   //sound.connect(audioContext.destination);
+  delay.delayTime.value = 5.0;
   source = audioContext.createBufferSource();
   source.buffer = sampleBuffer;
   source.connect(delay);
