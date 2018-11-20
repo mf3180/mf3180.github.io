@@ -143,14 +143,15 @@ stopButton.onclick = function () {
 //this function loads the sound
 function loadSound() {
   var request = new XMLHttpRequest();
-  request.open("GET", 'Crimewave.mp3', true);
+  request.open('GET', 'Crimewave.mp3', true);
   request.responseType = 'arraybuffer';
-
+  console.log("merp");
   request.onload = function() {
-
+    console.log("merp2");
     audioContext.decodeAudioData(request.response, function(buffer){
       sampleBuffer = buffer;
       playButton.innerHTML = 'play';
+      console.log("merp3");
     });
   };
   
@@ -163,6 +164,7 @@ function setupSound() {
   sound = audioContext.createBufferSource();
   sound.buffer = sampleBuffer;
   sound.loop = loop;
+  sound.connect(audioContext.destination);
   
 }
 
