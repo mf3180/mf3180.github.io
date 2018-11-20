@@ -3,46 +3,44 @@
 <body>
   <h1>Delay with Feedback and more</h1>
 <script>
-var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
-    delay = audioContext.createDelay(),
-    soundAudio = 'Crimewave.mp3',
-    sampleBuffers, sound, playButton = document.querySelector('.play'),
-    stopButton = document.querySelector('.stop'),
-    loop = false,
-    loopButton = document.querySelector('.loop')
+var audioContext = new(window.AudioContext || window.webkitAudioContext)();
+var soundAudio = 'Crimewave.mp3';
+var sampleBuffers;
 var sound;
+var playButton = document.querySelector('.play');
+var stopButton = document.querySelector('.stop');
+
 //this function loads the sound
+init();
+
 function init() {
 	loadSound(soundAudio);
+}
+
+playButton.onclick = function () {
+    playSound();
 };
 
-function playButton(){
-	playSound();
-};
-
-function stopButton(){
-	stopSound();
+stopButton.onclick = function () {
+    stopSound();
 };
 
 
 //this function loads the sound
 function loadSound(url) {
 	var request = new XMLHttpRequest();
-request.open("GET", url, true);
-request.responseType = "arraybuffer";
+	request.open("GET", url, true);
+	request.responseType = "arraybuffer";
 
-request.onload = function() {
+	request.onload = function() {
 
-	audioContext.decodeAudioData(request.response, function(buffer){
-		sampleBuffer = buffer;
-		playButton.disabled = false;
-		playButton.innerHTML = 'play';
-	});
-	init();
-};
+		audioContext.decodeAudioData(request.response, function(buffer){
+			sampleBuffer = buffer;
+			playButton.innerHTML = 'play';
+		});
+	};
 
-request.send();
-
+	request.send();
 }
 
 //this function sets up the sound
@@ -75,8 +73,8 @@ function stopSound() {
 <br>
 
 <div class="controls">
-    <button onclick="stopButton()" id="stop" class="stop action">Stop</button>
-	<button onclick="playButton()" id="play" class="play action">Play</button>
+    <button class="stop">Stop</button>
+	<button class="play">Play</button>
         </div>
 
 
