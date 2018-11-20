@@ -58,24 +58,18 @@ function setupSound() {
 	sound = audioContext.createBufferSource();
 	sound.buffer = sampleBuffer;
 	sound.loop = loop;
-	sound.connect(delay);
-	delay.connect(audioContext.destination);
+	source.connect(audioCtx.destination);
 }
 
 //this function plays the audio & enables/disables buttons
 function playSound() {
-	UI('play');
-	sound.start(0);
-	sound.onended = function () {
-		UI('stop');
-	}
+	sound.start();
 }
 
 //this function stops the sound and enables/disables buttons
 
 function stopSound() {
-	UI('stop');
-	sound.stop(0);
+	sound.stop();
 }
 </script>
 </body>
