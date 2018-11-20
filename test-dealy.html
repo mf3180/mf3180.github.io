@@ -163,7 +163,6 @@ function loadSound() {
 function setupSound() {
   sound = audioContext.createBufferSource();
   sound.buffer = sampleBuffer;
-  sound.loop = loop;
   sound.connect(audioContext.destination);
   
 }
