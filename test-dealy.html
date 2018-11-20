@@ -23,7 +23,7 @@ context.</p>
   </div>
 </div>
 
-/<script>
+<script>
 var context = new AudioContext();
 var source;
 
@@ -52,51 +52,49 @@ function getData() {
 
   request.send();
 }
-
-// start the source playing
 source.start();
 
-
+</script>
 <script>
-(function () {
-  var ctx = new AudioContext();
-  audioElement = $('#sliders audio')[0]
+// (function () {
+//   var ctx = new AudioContext();
+//   audioElement = $('#sliders audio')[0]
 
-  audioElement.addEventListener('play', function(){
-    source = ctx.createMediaElementSource(audioElement);
+//   audioElement.addEventListener('play', function(){
+//     source = ctx.createMediaElementSource(audioElement);
 
-    delay = ctx.createDelay();
-    delay.delayTime.value = 0.5;
+//     delay = ctx.createDelay();
+//     delay.delayTime.value = 0.5;
 
-    feedback = ctx.createGain();
-    feedback.gain.value = 0.8;
+//     feedback = ctx.createGain();
+//     feedback.gain.value = 0.8;
 
-    filter = ctx.createBiquadFilter();
-    filter.frequency.value = 1000;
+//     filter = ctx.createBiquadFilter();
+//     filter.frequency.value = 1000;
 
-    delay.connect(feedback);
-    feedback.connect(filter);
-    filter.connect(delay);
+//     delay.connect(feedback);
+//     feedback.connect(filter);
+//     filter.connect(delay);
 
-    source.connect(delay);
-    source.connect(ctx.destination);
-    delay.connect(ctx.destination);
-  });
+//     source.connect(delay);
+//     source.connect(ctx.destination);
+//     delay.connect(ctx.destination);
+//   });
 
-  var controls = $("div#sliders");
+//   var controls = $("div#sliders");
 
-  controls.find("input[name='delayTime']").on('input', function() {
-    delay.delayTime.value = $(this).val();
-  });
+//   controls.find("input[name='delayTime']").on('input', function() {
+//     delay.delayTime.value = $(this).val();
+//   });
 
-  controls.find("input[name='feedback']").on('input', function() {
-    feedback.gain.value = $(this).val();
-  });
+//   controls.find("input[name='feedback']").on('input', function() {
+//     feedback.gain.value = $(this).val();
+//   });
 
-  controls.find("input[name='frequency']").on('input', function() {
-    filter.frequency.value = $(this).val();
-  });
-})();
+//   controls.find("input[name='frequency']").on('input', function() {
+//     filter.frequency.value = $(this).val();
+//   });
+// })();
 
     </script>
   </body>
