@@ -100,3 +100,85 @@ source.start();
   </body>
 
 </html>
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Delay with Feedback and more</h1>
+
+<br>
+<br>
+
+<div class="controls">
+    <button class="play">loading...</button>
+    <button class="stop">stop</button>
+        </div>
+
+<script>
+var audioContext = new(window.AudioContext || window.webkitAudioContext)();
+
+var sampleBuffers;
+var sound;
+var playButton = document.querySelector(".play");
+var stopButton = document.querySelector(".stop");
+
+//this function loads the sound
+init();
+
+function init() {
+  loadSound();
+}
+
+playButton.onclick = function () {
+    playSound();
+};
+
+stopButton.onclick = function () {
+    stopSound();
+};
+
+
+//this function loads the sound
+function loadSound() {
+  var request = new XMLHttpRequest();
+  request.open("GET", 'Crimewave.mp3', true);
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+
+    audioContext.decodeAudioData(request.response, function(buffer){
+      sampleBuffer = buffer;
+      source.connect(audioCtx.destination);
+      playButton.innerHTML = 'play';
+    });
+  };
+  setupSound();
+  request.send();
+}
+
+//this function sets up the sound
+//needs to run when webpage loads to load audio buffer
+function setupSound() {
+  sound = audioContext.createBufferSource();
+  sound.buffer = sampleBuffer;
+  sound.loop = loop;
+  
+}
+
+//this function plays the audio & enables/disables buttons
+function playSound() {
+  loadSound();
+  sound.start(0);
+}
+
+//this function stops the sound and enables/disables buttons
+
+function stopSound() {
+  sound.stop(0);
+}
+</script>
+</body>
+</html>
+
