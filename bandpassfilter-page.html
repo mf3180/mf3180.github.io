@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 
 <html>
-<title>Filtering Birdsong</title>
+<title>BandPass Filtering</title>
 <body>
-    <h1>Lowpass Filtering Birdsong</h1>
+    <h1>Bandpass Filtering</h1>
     
     <br>
     
-    <h3>Experiment with applying a lowpass filter to the tunez of Robyn!</h3>
+    <h3>Experiment with applying a bandpass filter to the audio!</h3>
 
     <br>
     <br>
@@ -30,13 +30,10 @@
 
     <p>Filter Type: </p>
     <select name="filterType" class="filtertype">
-        <option value="lowpass">Lowpass</option>
+        <option value="bandpass">Bandpass</option>
     </select>
 </div>
 
-<br>
-
-<p>Audio provided courtesy of the <a href="https://www.macaulaylibrary.org/">Macaulay Library</a>.</p>
 
 <br>
 <br>
@@ -47,7 +44,7 @@
 <script>
 var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     filter = audioContext.createBiquadFilter(),
-    BIRDAUDIO = 'Dancing On My Own.mp3',
+    Crimewave = 'Crimewave.mp3',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
@@ -67,7 +64,7 @@ var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
 init();
 
 function init() {
-    loadSound(BIRDAUDIO);
+    loadSound(Crimewave);
 }
 
 playButton.onclick = function () {
@@ -132,7 +129,7 @@ function stopSound() {
 function changeFilterType(type) {
     filter.type = type;
     switch (type) {
-        case 'lowpass':
+        case 'bandpass':
             break;
     }
 }
