@@ -39,7 +39,7 @@ var audioContext = new(window.AudioContext || window.webkitAudioContext)();
     filter = audioContext.createBiquadFilter();
     filter.type = 'bandpass';
     Crimewave = 'Crimewave.mp3';
-    sampleBuffer, sound, playButton = document.querySelector('.play');
+    sampleBuffers, sound, playButton = document.querySelector('.play');
     stopButton = document.querySelector('.stop');
     loop = false;
 
