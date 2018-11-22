@@ -6,7 +6,7 @@
 <html>
 <title>BandPass Filtering</title>
 <body>
-    <h1>Bandpass Filtering</h1>
+    <h1>Fun With Bandpass Filtering</h1>
     
     <br>
     
@@ -19,24 +19,25 @@
     <button class="stop" disabled>stop</button>
 </div>
 
-<br>
-
-</div>
 <div class='filter-controls'>
-    <label for='filterFreq'>Filter Frequency: <span class='freq'>2500Hz</span>
+    <label for='filterFreq'>Filter Frequency <span class='freq'>2500Hz</span>
 
-        <input class='filter-slider' name='filterFreq' type='range' min='0' max='10000' step='10' value='2500' disabled />
+        <input class='filter-slider' name='filterFreq' type='range' min='0' max='20000' step='10' value='2500' disabled />
     </label>
-
-    <p>Filter Type: </p>
+    
+    <label>Quality (Q) Value <span class='filter-q-value'>1</span> 
+        <input class="filter-q-slider" type="range" min=".0001" max="10" step=".0005" value="1" disabled/>
+    </label>
+    
+    <label>filter gain value <span class='filter-gain-value'>0</span> 
+        <input class="filter-gain-slider" type="range" min="-40" max="40" step="1" value="0" disabled/>
+    </label>
+    
+    <p>filter type</p>
     <select name="filterType" class="filtertype">
-        <option value="bandpass">Bandpass</option>
+        <option value="bandpass">bandpass</option>
     </select>
 </div>
-
-
-<br>
-<br>
 
 <h3><a href="index.html">Back to Home</a></h3>
 
@@ -47,7 +48,6 @@ var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
-    loopButton = document.querySelector('.loop'),
 
     filterType = document.querySelector('.filtertype'),
     filterFreq = document.querySelector('.freq'),
@@ -63,7 +63,7 @@ var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
 init();
 
 function init() {
-    loadSound(sampleURL);
+    loadSound(Crimewave);
 }
 
 playButton.onclick = function () {
@@ -72,10 +72,6 @@ playButton.onclick = function () {
 
 stopButton.onclick = function () {
     stopSound();
-};
-
-loopButton.onclick = function () {
-    loop = event.target.checked;
 };
 
 filterType.oninput = function () {
