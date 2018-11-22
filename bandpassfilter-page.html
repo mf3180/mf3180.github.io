@@ -18,7 +18,11 @@
     <button class="play" disabled>loading...</button>
     <button class="stop" disabled>stop</button>
 </div>
-
+<div class='play-controls'>
+    <label for='loop'>loop
+        <input type='checkbox' name='loop' class="loop" />
+    </label>
+</div>
 <div class='filter-controls'>
     <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
 
@@ -41,7 +45,7 @@
 <script>
 var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
     filter = audioContext.createBiquadFilter(),
-    myAudio = 'Crimewave.mp3',
+    sampleURL = 'https://dl.dropboxusercontent.com/s/qo2ootyr0ier8uh/dinky-jam-2.mp3',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
     loop = false,
@@ -61,7 +65,7 @@ var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
 init();
 
 function init() {
-    loadSound(myAudio);
+    loadSound(sampleURL);
 }
 
 playButton.onclick = function () {
@@ -70,6 +74,10 @@ playButton.onclick = function () {
 
 stopButton.onclick = function () {
     stopSound();
+};
+
+loopButton.onclick = function () {
+    loop = event.target.checked;
 };
 
 filterType.oninput = function () {
@@ -108,6 +116,7 @@ function loadSound(url) {
 function setupSound() {
     sound = audioContext.createBufferSource();
     sound.buffer = sampleBuffer;
+    sound.loop = loop;
     sound.connect(filter);
     filter.connect(audioContext.destination);
 }
@@ -132,9 +141,22 @@ function stopSound() {
 function changeFilterType(type) {
     filter.type = type;
     switch (type) {
+        case 'peaking':
+            filterQSlider.disabled = false;
+            filterGainSlider.disabled = false;
+            break;
+        case 'lowpass':
+        case 'highpass':
         case 'bandpass':
+        case 'notch':
+        case 'allpass':
             filterGainSlider.disabled = true;
             filterQSlider.disabled = false;
+            break;
+        case 'lowshelf':
+        case 'highshelf':
+            filterGainSlider.disabled = false;
+            filterQSlider.disabled = true;
             break;
     }
 }
