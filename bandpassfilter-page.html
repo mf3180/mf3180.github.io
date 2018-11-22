@@ -29,35 +29,25 @@
         <input class="filter-q-slider" type="range" min=".0001" max="10" step=".0005" value="1" disabled/>
     </label>
     
-    <label>filter gain value <span class='filter-gain-value'>0</span> 
-        <input class="filter-gain-slider" type="range" min="-40" max="40" step="1" value="0" disabled/>
-    </label>
     
-    <p>filter type</p>
-    <select name="filterType" class="filtertype">
-        <option value="bandpass">bandpass</option>
-    </select>
 </div>
 
 <h3><a href="index.html">Back to Home</a></h3>
 
 <script>
-var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
-    filter = audioContext.createBiquadFilter(),
-    Crimewave = 'Crimewave.mp3',
-    sampleBuffer, sound, playButton = document.querySelector('.play'),
-    stopButton = document.querySelector('.stop'),
-    loop = false,
+var audioContext = new(window.AudioContext || window.webkitAudioContext)();
+    filter = AudioContext.createBiquadFilter();
+    filter.type = 'bandpass';
+    Crimewave = 'Crimewave.mp3';
+    sampleBuffer, sound, playButton = document.querySelector('.play');
+    stopButton = document.querySelector('.stop');
+    loop = false;
 
-    filterType = document.querySelector('.filtertype'),
-    filterFreq = document.querySelector('.freq'),
-    filterFreqSlider = document.querySelector('.filter-slider'),
+    filterFreq = document.querySelector('.freq');
+    filterFreqSlider = document.querySelector('.filter-slider');
 
-    filterQ = document.querySelector('.filter-q-value'),
-    filterQSlider = document.querySelector('.filter-q-slider'),
-
-    filterGain = document.querySelector('.filter-gain-value'),
-    filterGainSlider = document.querySelector('.filter-gain-slider');
+    filterQ = document.querySelector('.filter-q-value');
+    filterQSlider = document.querySelector('.filter-q-slider');
 
 // load our sound
 init();
@@ -74,20 +64,12 @@ stopButton.onclick = function () {
     stopSound();
 };
 
-filterType.oninput = function () {
-    changeFilterType(filterType.value);
-};
-
 filterFreqSlider.oninput = function () {
     changeFilterFreq(filterFreqSlider.value);
 };
 
 filterQSlider.oninput = function () {
     changeFilterQ(filterQSlider.value);
-};
-
-filterGainSlider.oninput = function () {
-    changeFilterGain(event.target.value);
 };
 
 // function to load sounds via AJAX
@@ -131,17 +113,6 @@ function stopSound() {
     sound.stop(0);
 }
 
-// change filter type and enable / disable controls depending on filter type
-function changeFilterType(type) {
-    filter.type = type;
-    switch (type) {
-        case 'bandpass':
-            filterGainSlider.disabled = true;
-            filterQSlider.disabled = false;
-            break;
-    }
-}
-
 // change filter frequency and update display 
 function changeFilterFreq(freq) {
     filter.frequency.value = freq;
@@ -154,12 +125,6 @@ function changeFilterQ(Q) {
     filterQ.innerHTML = Q;
 }
 
-// change filter Gain and update display
-function changeFilterGain(gain) {
-    filter.gain.value = gain;
-    filterGain.innerHTML = gain + 'dB';
-}
-
 function UI(state){
     switch(state){
         case 'play':
@@ -167,14 +132,12 @@ function UI(state){
             stopButton.disabled = false;
             filterFreqSlider.disabled = false;
             filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
             break;
         case 'stop':
             playButton.disabled = false;
             stopButton.disabled = true;
             filterFreqSlider.disabled = true;
             filterQSlider.disabled = true;
-            filterGainSlider.disabled = true;
             break;
     }
 }
