@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="">
+
+<title>Experimenting with Delay Effects</title>
+
+<body>
+	<h1>Ring Modulation BABY</h1>
+
+	<br>
+
+	<h3>Experiment with applying a ring mode effect to the embded audio.  Use the slider below to play around!. </h3>
+
+	<br>
+	<br>
+
+<script>
+	var wac = new (window.AudiocContext || window.webkitAudioContext)();
+
+var ringGain = wac.createGainNode();
+ringGain.gain.setValueAtTime(0, 0);
+
+var ringCarrier = wac.createOscillator();
+ringCarrier.type = ringCarrier.SINE;
+ringCarrier.frequency.setValueAtTime(2500, 0);
+
+var url = "Crimewave.mp3";
+
+var mediaElement = document.createElement("audio");
+mediaElement.setAttribute("id", "audioElement");
+// mediaElement.setAttribute("src", url);                                                                                                                                                 
+mediaElement.setAttribute("src", "Crimewave.mp3");
+
+var sourceNode = wac.createMediaElementSource(mediaElement);
+
+ringCarrier.connect(ringGain.gain);
+sourceNode.connect(ringGain);
+ringGain.connect(wac.destination);
+
+ringCarrier.noteOn(0);
+
+var request = new XMLHttpRequest();
+request.open('GET', url, true);
+request.responseType = 'arraybuffer';
+
+request.onload = function() {
+    wac.decodeAudioData(request.response, function(pianoBuffer) {
+                            var source = wac.createBufferSource();
+                            source.buffer = pianoBuffer;
+                            source.connect(ringGain);
+                            source.noteOn(0);
+                        }, function (e) {});
+}
+request.send();
+
+</script>
+</body>
+</html>
