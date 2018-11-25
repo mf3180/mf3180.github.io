@@ -2,201 +2,119 @@
 
 
 <!DOCTYPE html>
+<head>
 
-<html>
-<title>BandPass Filtering</title>
+<title>Bandpass Filtering</title>
+
+</head>
+
 <body>
-    <h1>Fun With Bandpass Filtering</h1>
-    
-    <br>
-    
-    <h3>Experiment with applying a bandpass filter to the audio!  You can adjust the Q and the center frequency.</h3>
 
-    <br>
-    <br>
-<div class='controls'>
-    <button class="play" disabled>loading...</button>
-    <button class="stop" disabled>stop</button>
-</div>
-<div class='play-controls'>
-    <label for='loop'>loop
-        <input type='checkbox' name='loop' class="loop" />
-    </label>
-</div>
-<div class='filter-controls'>
-    <label for='filterFreq'>filter frequency <span class='freq'>2500Hz</span>
+<div id="wrapper">
+    <div id="content">
 
-        <input class='filter-slider' name='filterFreq' type='range' min='0' max='20000' step='10' value='2500' disabled />
-    </label>
-    <label>quality (Q) value <span class='filter-q-value'>1</span> 
-        <input class="filter-q-slider" type="range" min=".0001" max="10" step=".0005" value="1" disabled/>
-    </label>
-    <label>filter gain value <span class='filter-gain-value'>0</span> 
-        <input class="filter-gain-slider" type="range" min="-40" max="40" step="1" value="0" disabled/>
-    </label>
-    <p>filter type</p>
-    <select name="filterType" class="filtertype">
-        <option value="bandpass">bandpass</option>
-    </select>
-</div>
+      
+<div class="post">
+  <h2>Fun with Bandpass Filtering</h2>
+  <p>
+    This lets you to apply a bandpass filter to a given audio sample. Play around with the center frequency and Q values!
+</p>
 
-<h3><a href="index.html">Back to Home</a></h3>
+<p><input type="button" onclick="sample.toggle();" value="Play/Pause"></p>
+
+<p><input type="checkbox" id="daBox" checked="false" onchange="sample.toggleFilter(this);"
+<label for="daBox"><span></span>Enable filter</label></p>
+
+<p><input type="range" min="0" max="1" step="0.01" value="1" oninput="sample.changeFrequency(this);">Frequency</p>
+
+<p><input type="range" min="0" max="1" step="0.01" value="0" oninput="sample.changeQuality(this);">Quality</p>
+
+        </p>
+        </div>
+    </div>
+</div>
 
 <script>
-var audioContext = new(window.AudioContext || window.webkitAudioContext)(),
-    filter = audioContext.createBiquadFilter(),
-    myAudio = 'Crimewave.mp3',
-    sampleBuffer, sound, playButton = document.querySelector('.play'),
-    stopButton = document.querySelector('.stop'),
-    loop = false,
-    loopButton = document.querySelector('.loop'),
+var sample = new FilterSample();
+</script>
 
-    filterType = document.querySelector('.filtertype'),
-    filterFreq = document.querySelector('.freq'),
-    filterFreqSlider = document.querySelector('.filter-slider'),
+  </p>
+</div>
 
-    filterQ = document.querySelector('.filter-q-value'),
-    filterQSlider = document.querySelector('.filter-q-slider'),
 
-    filterGain = document.querySelector('.filter-gain-value'),
-    filterGainSlider = document.querySelector('.filter-gain-slider');
+    </div>
 
-// load our sound
-init();
+  </div>
 
-function init() {
-    loadSound(myAudio);
-}
 
-playButton.onclick = function () {
-    playSound();
+<script>
+
+var QUAL_MUL = 30;
+
+function FilterSample() {
+  this.isPlaying = false;
+  loadSounds(this, {buffer: 'Crimewave.mp3'});
 };
 
-stopButton.onclick = function () {
-    stopSound();
+FilterSample.prototype.play = function() {
+  // Create the source.
+  var source = context.createBufferSource();
+  source.buffer = this.buffer;
+  // Create the filter.
+  var filter = context.createBiquadFilter();
+  filter.type = filter.bandpass;
+  filter.frequency.value = 5000;
+  // Connect source to filter, filter to destination.
+  source.connect(filter);
+  filter.connect(context.destination);
+  // Play!
+  source[source.start ? 'start' : 'noteOn'](0);
+  source.loop = true;
+  // Save source and filterNode for later access.
+  this.source = source;
+  this.filter = filter;
 };
 
-loopButton.onclick = function () {
-    loop = event.target.checked;
+FilterSample.prototype.stop = function() {
+  this.source.stop(0);
 };
 
-filterType.oninput = function () {
-    changeFilterType(filterType.value);
+FilterSample.prototype.toggle = function() {
+  this.isPlaying ? this.stop() : this.play();
+  this.isPlaying = !this.isPlaying;
 };
 
-filterFreqSlider.oninput = function () {
-    changeFilterFreq(filterFreqSlider.value);
+FilterSample.prototype.changeFrequency = function(element) {
+  // Clamp the frequency between the minimum value (40 Hz) and half of the
+  // sampling rate.
+  var minValue = 40;
+  var maxValue = context.sampleRate / 2;
+  // Logarithm (base 2) to compute how many octaves fall in the range.
+  var numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
+  // Compute a multiplier from 0 to 1 based on an exponential scale.
+  var multiplier = Math.pow(2, numberOfOctaves * (element.value - 1.0));
+  // Get back to the frequency value between min and max.
+  this.filter.frequency.value = maxValue * multiplier;
 };
 
-filterQSlider.oninput = function () {
-    changeFilterQ(filterQSlider.value);
+FilterSample.prototype.changeQuality = function(element) {
+  this.filter.Q.value = element.value * QUAL_MUL;
 };
 
-filterGainSlider.oninput = function () {
-    changeFilterGain(event.target.value);
+FilterSample.prototype.toggleFilter = function(element) {
+  this.source.disconnect(0);
+  this.filter.disconnect(0);
+  // Check if we want to enable the filter.
+  if (element.checked) {
+    // Connect through the filter.
+    this.source.connect(this.filter);
+    this.filter.connect(context.destination);
+  } else {
+    // Otherwise, connect directly.
+    this.source.connect(context.destination);
+  }
 };
 
-// function to load sounds via AJAX
-function loadSound(url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.responseType = 'arraybuffer';
-
-    request.onload = function () {
-        audioContext.decodeAudioData(request.response, function (buffer) {
-            sampleBuffer = buffer;
-            playButton.disabled = false;
-            playButton.innerHTML = 'play';
-        });
-    };
-
-    request.send();
-}
-// setup sound, loop, and connect to destination
-function setupSound() {
-    sound = audioContext.createBufferSource();
-    sound.buffer = sampleBuffer;
-    sound.loop = loop;
-    sound.connect(filter);
-    filter.connect(audioContext.destination);
-}
-
-// play sound and enable / disable buttons
-function playSound() {
-    setupSound();
-    UI('play');
-    sound.start(0);
-    sound.onended = function () {
-        UI('stop');
-    }
-}
-
-// stop sound and enable / disable buttons
-function stopSound() {
-    UI('stop');
-    sound.stop(0);
-}
-
-// change filter type and enable / disable controls depending on filter type
-function changeFilterType(type) {
-    filter.type = type;
-    switch (type) {
-        case 'peaking':
-            filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
-            break;
-        case 'lowpass':
-        case 'highpass':
-        case 'bandpass':
-        case 'notch':
-        case 'allpass':
-            filterGainSlider.disabled = true;
-            filterQSlider.disabled = false;
-            break;
-        case 'lowshelf':
-        case 'highshelf':
-            filterGainSlider.disabled = false;
-            filterQSlider.disabled = true;
-            break;
-    }
-}
-
-// change filter frequency and update display 
-function changeFilterFreq(freq) {
-    filter.frequency.value = freq;
-    filterFreq.innerHTML = freq + 'Hz';
-}
-
-// change filter Q and update display
-function changeFilterQ(Q) {
-    filter.Q.value = Q;
-    filterQ.innerHTML = Q;
-}
-
-// change filter Gain and update display
-function changeFilterGain(gain) {
-    filter.gain.value = gain;
-    filterGain.innerHTML = gain + 'dB';
-}
-
-function UI(state){
-    switch(state){
-        case 'play':
-            playButton.disabled = true;
-            stopButton.disabled = false;
-            filterFreqSlider.disabled = false;
-            filterQSlider.disabled = false;
-            filterGainSlider.disabled = false;
-            break;
-        case 'stop':
-            playButton.disabled = false;
-            stopButton.disabled = true;
-            filterFreqSlider.disabled = true;
-            filterQSlider.disabled = true;
-            filterGainSlider.disabled = true;
-            break;
-    }
-}
 </script>
 </body>
 </html>
