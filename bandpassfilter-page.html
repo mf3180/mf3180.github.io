@@ -15,7 +15,7 @@
 
       
 <div class="post">
-  <h2>Fun with Bandpass Filteringggg</h2>
+  <h2>Fun with Bandpass Filteringggg!!!</h2>
   <p>
     This lets you to apply a bandpass filter to a given audio sample. Play around with the center frequency and Q values!
 </p>
@@ -46,7 +46,6 @@
 <script>
 
 var QUAL_MUL = 30;
-var sample = new FilterSample();
 
 function FilterSample() {
   this.isPlaying = false;
@@ -61,6 +60,7 @@ FilterSample.prototype.play = function() {
   var filter = context.createBiquadFilter();
   filter.type = filter.bandpass;
   filter.frequency.value = 5000;
+
   // Connect source to filter, filter to destination.
   source.connect(filter);
   filter.connect(context.destination);
@@ -112,6 +112,9 @@ FilterSample.prototype.toggleFilter = function(element) {
   }
 };
 
+</script>
+<script>
+    var sample = new FilterSample();
 </script>
 </body>
 </html>
