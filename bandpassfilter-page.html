@@ -7,14 +7,13 @@
 <button id="stop">Stop</button>
 
 <body>
-    <h1>Tone JS Bandpass Filter</h1>
+    <h1>Tone JS Bandpass Filter 2</h1>
 
     <script src="Tone.min.js"></script>
     <script>
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", BandpassFilter);
-        var newFilter = new Tone.BandpassFilter(350, "bandpass").toMaster();
-        newFilter.Q.value = 4.0;
+        var newFilter = new Tone.BandpassFilter.toMaster();
 
 
         var stopbutton = document.getElementById("stop");
