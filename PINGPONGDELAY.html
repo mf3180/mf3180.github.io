@@ -39,9 +39,9 @@
 	stopbutton.addEventListener("click", PingPongStop);
 
 	//DELAY SLIDER
-	 var delaySlider = document.getElementById("slider");
-        delaySlider.step = .01;
-        delaySlider.addEventListener("click", updateVal)
+	 var slider = document.getElementById("slider");
+        slider.step = ".01";
+        slider.addEventListener("click", updateVal)
         var arg1 = .5;
         var arg2 = .2;
 
@@ -67,7 +67,7 @@
 
 	//controls delay time function; connected to "Delay Time" slider
 	function updateVal() {
-		arg1 = delaySlider.value;
+		arg1 = slider.value;
 		pingPong.delayTime.value = arg1;
 		console.log(pingPong.delayTime.value);
 	}
@@ -76,4 +76,4 @@
 
 </body>
 
-</html> 
+</html>         
