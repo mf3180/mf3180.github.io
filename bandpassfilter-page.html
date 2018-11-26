@@ -25,7 +25,7 @@
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", bandpassPlay);
        
-        var newFilter = new Tone.Filter(200, "lowpass").toMaster();
+        var newFilter = new Tone.Filter("lowpass").toMaster();
 
         var Qslider = document.getElementById("Qslider");
         var output = document.getElementById("demo");
