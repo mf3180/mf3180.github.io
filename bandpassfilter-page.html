@@ -2,58 +2,69 @@
 
 <html>
 
-
 <title>BandPass Filter</title>
-
-<body>
-
-<h1>Tone JS Bandpass Filter 2</h1>
-
 <button id="play">Play</button>
 <button id="stop">Stop</button>
-
+<button id="shift">shift</button>
 <div class="slidecontainer">
-    <input type="range" min="0" max="5.0" step = "0.1" value="0" class="slider" id="Qslider">
-    <p>Value: <span id="demo"></span></p>
+	<input type="range" min="0" max="1" value=".5" class="slider" id="slider">
 </div>
 
- <script src="Tone.min.js"></script>
-    <script>
-        
-        var Q_multiplier = 30;
+<body>
+	<h1>Tone JS Bandpass Filter 2</h1>
 
-        var playbutton = document.getElementById("play");
-        playbutton.addEventListener("click", bandpassPlay);
-       
-        var newFilter = new Tone.Filter("lowpass").toMaster();
+	<script src="Tone.js"></script>
+	<script>
+		var slider = document.getElementById("slider");
+		slider.step = ".01";
+		slider.addEventListener("click",updateVal)
+		var arg1 = .5;
+		var arg2 = .2;
+		var eq = new Tone.EQ3(-10, 3, 10).toMaster();;
 
-        var Qslider = document.getElementById("Qslider");
-        var output = document.getElementById("demo");
-        output.innerHTML = Qslider.value;
+		var freq = 1;
+		var filt = new Tone.Filter({
+			type: "lowpass",
+			frequency: 500,
+			rolloff: -12,
+			Q: 4.4
+		});
+		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		var pingPong = new Tone.PingPongDelay(arg1, arg2).toMaster();
+		player.connect(pingPong);
+		var playbutton = document.getElementById("play");
+		var shiftButton = document.getElementById("shift");
+		shiftButton.addEventListener("click", shiftF);
+		playbutton.addEventListener("click", bandpassPlay);
+		//		player.connect(filt);
+		player.connect(eq);
+		var stopbutton = document.getElementById("stop");
+		stopbutton.addEventListener("click", bandpassStop);
 
-        Qslider.oninput = function() {
-            output.innerHTML = this.value;
-        }
 
-        var stopbutton = document.getElementById("stop");
-        stopbutton.addEventListener("click", bandpassStop);
-       
-        var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
-        
-        function bandpassPlay() {
-            player.start();
-            player.connect(newFilter);   
-        }
-        function bandpassStop() {
-            player.stop();
-            player.disconnect(newFilter);
-        }
 
-        function adjustQwidth(element) {
-            newFilter.Q.value = element.value * Q_multiplier;
-        }
-    </script>
+		function bandpassPlay() {
+			player.start();
+
+
+		}
+
+		function bandpassStop() {
+			player.stop();
+		}
+
+		function shiftF() {
+			newFilter.frequency = 1000;
+		}
+
+		function updateVal(){
+			arg1 = slider.value;
+			pingPong.delayTime.value = arg1;
+			console.log(pingPong.delayTime.value);
+		}
+	</script>
 
 
 </body>
-</html> 
+
+</html>
