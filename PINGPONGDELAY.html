@@ -1,3 +1,5 @@
+<!-- A huge thank you to Quin Scacheri for helping me out with this code! -->
+
 <!DOCTYPE html>
 
 <html>
@@ -35,34 +37,56 @@
 
 <p> Amount of Feedback </p>
 <input type="range" min="0" max="1" value="0.5" class="slider" id="feedbackSlider">
-	 <p class="a">Amount of Feedback: <span id="demo2"></span></p>
+	 <p class="a"> % of Effect that Passes to the Output: <span id="demo2"></span></p>
+
+<br>
+<br>
+
+ <p> Wet Control </p>
+<input type="range" min="0" max="1" value="0.5" class="slider" id="wetSlider">
+	 <p class="a">Amount of Feedback: <span id="demo3"></span></p>
 
 <script src="Tone.min.js"></script>
 
 	<script>
+		
+		//delay time slider
 		var slider1 = document.getElementById("delaySlider");
 		slider1.step = ".01";
 		slider1.addEventListener("click",updatedelayVal)
 		
-
+		//delay time slider output
 		var output1 = document.getElementById("demo");
 		output1.innerHTML = slider1.value;
 		
-
+		//feedback slider
 		var slider2 = document.getElementById("feedbackSlider");
 		slider2.step = ".01";
 		slider2.addEventListener("click", updatefeedbackVal)
 
+		//feedback slider output
 		var output2 = document.getElementById("demo2");
 		output2.innerHTML = slider2.value;
 		
+		//wet slider
+		var slider3 = document.getElementById("wetSlider");
+		slider3.step = ".01";
+		slider3.addEventListener("click", updatewetVal)
+
+		//wet slider output
+		var output3 = document.getElementById("demo3");
+		output3.innerHTML = slider3.value;
+
 		var arg1 = .5;
 		var arg2 = .2;
 
+		//calls the audio file
 		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
 		
+		//connects player
 		var pingPong = new Tone.PingPongDelay(arg1, arg2).toMaster();
 		player.connect(pingPong);
+		
 		
 		var playbutton = document.getElementById("play");
 		playbutton.addEventListener("click", pingpongPlay);
@@ -70,33 +94,53 @@
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", pingpongStop);
 
+		
+		//delay time slider function
 		slider1.oninput = function() {
 			output1.innerHTML = this.value;
 		}
 		
+		//feedback slider function
 		slider2.oninput = function() {
 			output2.innerHTML = this.value;
 		}
 		
+
+		// wet slider function
+		slider3.oninput = function() {
+			output3.innerHTML = this.value;
+		}
+
+		//play function
 		function pingpongPlay() {
 			player.start();
 
 		}
 
+		//stop function
 		function pingpongStop() {
 			player.stop();
 		}
 
+		//get delay time value 
 		function updatedelayVal(){
 			arg1 = slider1.value;
 			pingPong.delayTime.value = arg1;
 			console.log(pingPong.delayTime.value);
 		}
 
+		//get feedback value
 		function updatefeedbackVal(){
 			arg1 = slider2.value;
 			pingPong.feedback.value = arg1;
 			console.log(pingPong.feedback.value);
+		}
+
+		//get wet value
+		function updatewetVal() {
+			arg1 = slider3.value;
+			pingPong.wet.value = arg1;
+			console.log(pingPong.wet.value);
 		}
 
 </script>
