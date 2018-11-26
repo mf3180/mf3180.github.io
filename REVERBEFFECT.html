@@ -2,26 +2,119 @@
 
 <html>
 
-<title>Reverb Effect</title>
-<button id="play">Play</button>
-<button id="stop">Stop</button>
+<html>
+<head>
+<style>
+	p.a {font-family: Georgia, serif;}
+	body {background-color: PowderBlue;}
+	h1 {text-align:center; font-family: Georgia, sans-serif;}
+	h3 {font-family: Georgia, sans-serif;}
+</style>
+	<title>Reverb Effect</title>
+</head>	
 
 <body>
-	<h1>Tone JS Reverb Effect</h1>
+	
+<h1>Reverb Effect with Tone. JS</h1>
+	
+<br>
+	
+<h3>This is a reverb effect.  Experiment with controlling the X, Y, and Z by moving the sliders around.</h3>
+	
+<div class="buttons">	
+<button id="play" class="play">Play</button>
+<button id="stop" class="stop">Stop</button>
+</div>
+
+<br>
+<br>
+
+<p> Damping </p>
+<input type="range" min="0" max="15000" value="400" step="10" class="slider" id="dampeningSlider">
+	 <p class="a">Dampening Frequency: <span id="demo"></span></p>
+
+<br>
+<br>
+
+<p> Room Size </p>
+<input type="range" min="0" max="1" value="0.5" class="slider" id="roomsizeSlider">
+	 <p class="a"> Room Size Value: <span id="demo2"></span></p>
+
+<br>
+<br>
+
+ <p> Wet Control </p>
+<input type="range" min="0" max="1" value="0.5" class="slider" id="wetSlider">
+	 <p class="a">% of Effect that Passes to the Output: <span id="demo3"></span></p>
 
 	<script src="Tone.min.js"></script>
 	<script>
-		var playbutton = document.getElementById("play");
-		playbutton.addEventListener("click", reverb);
-		var freeverb = new Tone.Freeverb().toMaster();
+		//dampening slider
+		var slider1 = document.getElementById("dampeningSlider");
+		slider1.step = ".01";
+		slider1.addEventListener("click",updatedampeningVal)
+		
+		//dampening time slider output
+		var output1 = document.getElementById("demo");
+		output1.innerHTML = slider1.value;
+		
+		//room size slider
+		var slider2 = document.getElementById("roomsizeSlider");
+		slider2.step = ".01";
+		slider2.addEventListener("click", updateroomsizeVal)
 
+		//room size slider output
+		var output2 = document.getElementById("demo2");
+		output2.innerHTML = slider2.value;
+		
+		//wet slider
+		var slider3 = document.getElementById("wetSlider");
+		slider3.step = ".01";
+		slider3.addEventListener("click", updatewetVal)
+
+		//wet slider output
+		var output3 = document.getElementById("demo3");
+		output3.innerHTML = slider3.value;
+
+		var arg1 = .5;
+		var arg2 = .2;
+
+		//calls the audio file
+		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+
+		
+		var freeverb = new Tone.Freeverb(arg1, arg2).toMaster();
+		player.connect(freeverb);
+
+		var playbutton = document.getElementById("play");
+		playbutton.addEventListener("click", reverbPlay);
+		
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", reverbStop);
 
 
 
 		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
-		function reverb() {
+		
+
+		//dampening slider function
+		slider1.oninput = function() {
+			output1.innerHTML = this.value;
+		}
+		
+		//room size slider function
+		slider2.oninput = function() {
+			output2.innerHTML = this.value;
+		}
+		
+
+		// wet slider function
+		slider3.oninput = function() {
+			output3.innerHTML = this.value;
+		}
+
+
+		function reverbPlay() {
 			player.start();
 			player.connect(freeverb);			
 		}
@@ -29,6 +122,28 @@
 		function reverbStop() {
 			player.stop();
 			player.disconnect(freeverb)
+		}
+
+
+		//get dampening value 
+		function updatedampeningVal(){
+			arg1 = slider1.value;
+			freeverb.dampening.value = arg1;
+			console.log(freeverb.dampening.value);
+		}
+
+		//get room size value
+		function updateroomsizeVal(){
+			arg1 = slider2.value;
+			freeverb.roomSize.value = arg1;
+			console.log(freeverb.roomSize.value);
+		}
+
+		//get wet value
+		function updatewetVal() {
+			arg1 = slider3.value;
+			freeverb.wet.value = arg1;
+			console.log(freeverb.wet.value);
 		}
 
 	</script>
