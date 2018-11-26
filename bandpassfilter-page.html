@@ -13,7 +13,7 @@
     <script>
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", bandpassPlay);
-        var newFilter = new Tone.Filter("bandpass").toMaster();
+        var newFilter = new Tone.Filter().toMaster();
 
 
         var stopbutton = document.getElementById("stop");
