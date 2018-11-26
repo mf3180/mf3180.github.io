@@ -25,7 +25,7 @@
 <div class="slidecontainer">
 
 	<input type="range" min="0" max="1" value=".5" class="slider" id="slider">
-	<label for='slider'>Delay Time <span id='demo'></span></label>
+	<label for='slider'>Delay Time <span id="demo"></span></label>
 
 </div>
 
@@ -33,6 +33,8 @@
 
 	<script>
 		var slider = document.getElementById("slider");
+		var output = document.getElementbyId("demo");
+		output.innerHTML = slider.value;
 		slider.step = ".01";
 		slider.addEventListener("click",updateVal)
 		var arg1 = .5;
@@ -47,9 +49,6 @@
 
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", bandpassStop);
-
-		var output = document.getElementbyId("demo");
-		output.innerHTML = slider.value;
 
 		function bandpassPlay() {
 			player.start();
