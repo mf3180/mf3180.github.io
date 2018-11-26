@@ -25,7 +25,7 @@
 <div class="slidecontainer">
 
 	<input type="range" min="0" max="1" value=".5" class="slider" id="mySlider">
-	<p>Delay Time: <span id="demo"></span></p>
+	 <p>Value: <span id="demo"></span></p>
 
 </div>
 
@@ -35,22 +35,32 @@
 		var slider = document.getElementById("mySlider");
 		slider.step = ".01";
 		slider.addEventListener("click",updateVal)
+		
+		var output = document.getElementById("demo");
+		output.innerHTML = slider.value;
+		
+		
 		var arg1 = .5;
 		var arg2 = .2;
 
 		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		
 		var pingPong = new Tone.PingPongDelay(arg1, arg2).toMaster();
 		player.connect(pingPong);
+		
 		var playbutton = document.getElementById("play");
 		playbutton.addEventListener("click", bandpassPlay);
-		//		player.connect(filt);
 
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", bandpassStop);
 
+		slider.oninput = function() {
+			output.innerHTML = this.value;
+		}
+		
+		
 		function bandpassPlay() {
 			player.start();
-
 
 		}
 
@@ -58,14 +68,13 @@
 			player.stop();
 		}
 
-
 		function updateVal(){
 			arg1 = slider.value;
 			pingPong.delayTime.value = arg1;
 			console.log(pingPong.delayTime.value);
 		}
 
-	</script>
+</script>
 
 
 </body>
