@@ -67,8 +67,6 @@
     sampleURL = 'https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3',
     sampleBuffer, sound, playButton = document.querySelector('.play'),
     stopButton = document.querySelector('.stop'),
-    loop = false,
-    loopButton = document.querySelector('.loop'),
 
     filterType = document.querySelector('.filtertype'),
     filterFreq = document.querySelector('.freq'),
@@ -93,10 +91,6 @@ playButton.onclick = function () {
 
 stopButton.onclick = function () {
     stopSound();
-};
-
-loopButton.onclick = function () {
-    loop = event.target.checked;
 };
 
 filterType.oninput = function () {
@@ -135,7 +129,6 @@ function loadSound(url) {
 function setupSound() {
     sound = audioContext.createBufferSource();
     sound.buffer = sampleBuffer;
-    sound.loop = loop;
     sound.connect(filter);
     filter.connect(audioContext.destination);
 }
