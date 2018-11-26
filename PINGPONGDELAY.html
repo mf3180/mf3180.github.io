@@ -5,7 +5,7 @@
 <style>
 	h1 {text-align:center;}
 </style>
-	<title>Ping-Pong Delay</title>
+	<title>BandPass Filter</title>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 <div class="slidecontainer">
 
 	<input type="range" min="0" max="1" value=".5" class="slider" id="slider">
-	<label for='slider'>Delay Time <span class='slider'>0.5</span></label>
+	<label for='slider'>Delay Time <span id='demo'></span></label>
 
 </div>
 
@@ -48,7 +48,8 @@
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", bandpassStop);
 
-
+		var output = document.getElementbyId("demo");
+		output.innerHTML = slider.value;
 
 		function bandpassPlay() {
 			player.start();
@@ -65,6 +66,10 @@
 			arg1 = slider.value;
 			pingPong.delayTime.value = arg1;
 			console.log(pingPong.delayTime.value);
+		}
+
+		slider.oninput = function() {
+			output.innerHTML = this.value;
 		}
 	</script>
 
