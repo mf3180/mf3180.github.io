@@ -1,79 +1,70 @@
-<!-- A huge thank you to Quin Scacheri for helping me with this code! -->
-
-
 <!DOCTYPE html>
 
 <html>
 
-<title>Ping-Pong Delay</title>
+<title>BandPass Filter</title>
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+<button id="shift">shift</button>
+<div class="slidecontainer">
+	<input type="range" min="0" max="1" value=".5" class="slider" id="slider">
+</div>
 
 <body>
-	<h1>Tone JS Ping Pong Effect</h1>
+	<h1>Tone JS Bandpass Filter 2</h1>
+
+	<script src="Tone.js"></script>
+	<script>
+		var slider = document.getElementById("slider");
+		slider.step = ".01";
+		slider.addEventListener("click",updateVal)
+		var arg1 = .5;
+		var arg2 = .2;
+		var eq = new Tone.EQ3(-10, 3, 10).toMaster();;
+
+		var freq = 1;
+		var filt = new Tone.Filter({
+			type: "lowpass",
+			frequency: 500,
+			rolloff: -12,
+			Q: 4.4
+		});
+		var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		var pingPong = new Tone.PingPongDelay(arg1, arg2).toMaster();
+		player.connect(pingPong);
+		var playbutton = document.getElementById("play");
+		var shiftButton = document.getElementById("shift");
+		shiftButton.addEventListener("click", shiftF);
+		playbutton.addEventListener("click", bandpassPlay);
+		//		player.connect(filt);
+		player.connect(eq);
+		var stopbutton = document.getElementById("stop");
+		stopbutton.addEventListener("click", bandpassStop);
 
 
-	<button id="play">Play</button>
-	<button id="stop">Stop</button>
 
-	<br>
-
-	<div class="slidecontainer">
-   		<input type="range" min="0" max="1" step = "0.1" value="0" class="slider" id="feedback">
-	 	<p>Maximum Delay Time: <span id="MDT"></span></p>
-
-	 	<input type="range" min="0" max ="1.5" step = "0.1" value="0" class="slider" id="delayTime">
-	 	<p>Delay Time: <span id="DT"></span></p>
-  
-	</div>
+		function bandpassPlay() {
+			player.start();
 
 
-<script src="Tone.min.js"></script>
+		}
 
-<script>
-		
-	//PLAY BUTTON
-	var playbutton = document.getElementById("play");
-	playbutton.addEventListener("click", PingPongDelay);
-		
-	//STOP BUTTON
-	var stopbutton = document.getElementById("stop");
-	stopbutton.addEventListener("click", PingPongStop);
+		function bandpassStop() {
+			player.stop();
+		}
 
-	//DELAY SLIDER
-	 var slider = document.getElementById("slider");
-        slider.step = ".01";
-        slider.addEventListener("click", updateVal)
-        var arg1 = .5;
-        var arg2 = .2;
+		function shiftF() {
+			newFilter.frequency = 1000;
+		}
 
-	//gets the audio file from GitHub
-	var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+		function updateVal(){
+			arg1 = slider.value;
+			pingPong.delayTime.value = arg1;
+			console.log(pingPong.delayTime.value);
+		}
+	</script>
 
-
-	// routes to master output
-	var pingPong = new Tone.PingPongDelay(arg1, arg2).toMaster();
-		
-	//controls play function; connected to "Play" button
-	function PingPongDelay() {
-		player.start();
-		player.connect(pingPong);	
-
-	}
-
-	//controls stop function; connected to "Stop" button
-	function PingPongStop() {
-		player.stop();
-		player.disconnect(pingPong);
-	}
-
-	//controls delay time function; connected to "Delay Time" slider
-	function updateVal() {
-		arg1 = slider.value;
-		pingPong.delayTime.value = arg1;
-		console.log(pingPong.delayTime.value);
-	}
-
-</script>
 
 </body>
 
-</html>         
+</html>
