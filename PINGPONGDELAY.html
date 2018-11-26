@@ -25,24 +25,36 @@
 
 <br>
 <br>
-	
-<div class="slidecontainer">
 
-	<input type="range" min="0" max="1" value="0.5" class="slider" id="mySlider">
+<p> Delay Time </p>
+<input type="range" min="0" max="1" value="0.5" class="slider" id="delaySlider">
 	 <p class="a">Delay Time: <span id="demo"></span> s </p>
 
-</div>
+<br>
+<br>
+
+<p> Amount of Feedback </p>
+<input type="range" min="0" max="1" value="0.5" class="slider" id="feedbackSlider">
+	 <p class="a">Amount of Feedback: <span id="demo2"></span></p>
 
 <script src="Tone.min.js"></script>
 
 	<script>
-		var slider = document.getElementById("mySlider");
-		slider.step = ".01";
-		slider.addEventListener("click",updateVal)
+		var slider1 = document.getElementById("delaySlider");
+		slider1.step = ".01";
+		slider1.addEventListener("click",updatedelayVal)
 		
-		var output = document.getElementById("demo");
-		output.innerHTML = slider.value;
+
+		var output1 = document.getElementById("demo");
+		output1.innerHTML = slider1.value;
 		
+
+		var slider2 = document.getElementById("feedbackSlider");
+		slider2.step = ".01";
+		slider2.addEventListener("click", updatefeedbackVal)
+
+		var output2 = document.getElementById("demo2");
+		output2.innerHTML = slider2.value;
 		
 		var arg1 = .5;
 		var arg2 = .2;
@@ -58,10 +70,13 @@
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", pingpongStop);
 
-		slider.oninput = function() {
-			output.innerHTML = this.value;
+		slider1.oninput = function() {
+			output1.innerHTML = this.value;
 		}
 		
+		slider2.oninput = function() {
+			output.innerHTML = this.value;
+		}
 		
 		function pingpongPlay() {
 			player.start();
@@ -72,10 +87,16 @@
 			player.stop();
 		}
 
-		function updateVal(){
-			arg1 = slider.value;
+		function updatedelayVal(){
+			arg1 = slider1.value;
 			pingPong.delayTime.value = arg1;
 			console.log(pingPong.delayTime.value);
+		}
+
+		function updatefeedbackVal(){
+			arg1 = slider2.value;
+			pingPong.feedback.value = arg1;
+			console.log(pingPong.feedback.value);
 		}
 
 </script>
