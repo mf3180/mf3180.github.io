@@ -2,16 +2,22 @@
 
 <html>
 
-<title>BandPass Filter</title>
-<button id="play">Play</button>
-<button id="stop">Stop</button>
-<slider id="Qvalue">Q</slider>
 
+<title>BandPass Filter</title>
 
 <body>
-    <h1>Tone JS Bandpass Filter 2</h1>
 
-    <script src="Tone.min.js"></script>
+<h1>Tone JS Bandpass Filter 2</h1>
+
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+
+<div class="slidecontainer">
+    <input type="range" min="0" max="5.0" value="0" class="slider" id="Qslider">
+    <p>Value: <span id="demo"></span></p>
+</div>
+
+ <script src="Tone.min.js"></script>
     <script>
         
         var Q_multiplier = 30;
@@ -21,7 +27,13 @@
        
         var newFilter = new Tone.Filter(750, "bandpass").toMaster();
 
-        var Qslider = document.getElementById("Qvalue");
+        var Qslider = document.getElementById("Qslider");
+        var output = document.getElementById("demo");
+        output.innerHTML = Qslider.value;
+
+        Qslider.oninput = function() {
+            output.innerHTML = this.value;
+        }
 
         var stopbutton = document.getElementById("stop");
         stopbutton.addEventListener("click", bandpassStop);
