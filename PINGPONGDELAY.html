@@ -20,7 +20,6 @@
 		slider.addEventListener("click",updateVal)
 		var arg1 = .5;
 		var arg2 = .2;
-		var eq = new Tone.EQ3(-10, 3, 10).toMaster();
 
 		var freq = 1;
 		var filt = new Tone.Filter({
@@ -37,7 +36,6 @@
 		shiftButton.addEventListener("click", shiftF);
 		playbutton.addEventListener("click", bandpassPlay);
 		//		player.connect(filt);
-		player.connect(eq);
 		var stopbutton = document.getElementById("stop");
 		stopbutton.addEventListener("click", bandpassStop);
 
