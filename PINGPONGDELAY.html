@@ -29,7 +29,7 @@
 <div class="slidecontainer">
 
 	<input type="range" min="0" max="1" value=".5" class="slider" id="mySlider">
-	 <p class="a">Value: <span id="demo"></span> s </p>
+	 <p class="a">Delay Time: <span id="demo"></span> s </p>
 
 </div>
 
@@ -53,22 +53,22 @@
 		player.connect(pingPong);
 		
 		var playbutton = document.getElementById("play");
-		playbutton.addEventListener("click", bandpassPlay);
+		playbutton.addEventListener("click", pingpongPlay);
 
 		var stopbutton = document.getElementById("stop");
-		stopbutton.addEventListener("click", bandpassStop);
+		stopbutton.addEventListener("click", pingpongStop);
 
 		slider.oninput = function() {
 			output.innerHTML = this.value;
 		}
 		
 		
-		function bandpassPlay() {
+		function pingpongPlay() {
 			player.start();
 
 		}
 
-		function bandpassStop() {
+		function pingpongStop() {
 			player.stop();
 		}
 
