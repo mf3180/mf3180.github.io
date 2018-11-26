@@ -5,38 +5,43 @@
 <title>BandPass Filter</title>
 <button id="play">Play</button>
 <button id="stop">Stop</button>
+<slider id="Qvalue">Q</slider>
+
 
 <body>
     <h1>Tone JS Bandpass Filter 2</h1>
 
     <script src="Tone.min.js"></script>
     <script>
+        
+        var Q_multiplier = 30;
+
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", bandpassPlay);
+       
         var newFilter = new Tone.Filter(750, "bandpass").toMaster();
-        newFilter.Q = 4.4;
-        newFilter.gain = 6.0;
 
+        var Qslider = document.getElementById("Qvalue");
 
         var stopbutton = document.getElementById("stop");
         stopbutton.addEventListener("click", bandpassStop);
-
-
+       
         var player = new Tone.Player("https://raw.githubusercontent.com/mf3180/mf3180.github.io/master/Crimewave.mp3").toMaster();
+        
         function bandpassPlay() {
             player.start();
             player.connect(newFilter);   
-
         }
         function bandpassStop() {
             player.stop();
             player.disconnect(newFilter);
         }
 
-
-
+        function adjustQwidth(element) {
+            newFilter.Q.value = element.value * Q_multiplier;
+        }
     </script>
 
 
 </body>
-</html>         
+</html> 
