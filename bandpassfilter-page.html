@@ -13,7 +13,7 @@
 <button id="stop">Stop</button>
 
 <div class="slidecontainer">
-    <input type="range" min="0" max="5.0" value="0" class="slider" step="0.1" id="Qslider">
+    <input type="range" min="0" max="5.0" step = "0.1" value="0" class="slider" id="Qslider">
     <p>Value: <span id="demo"></span></p>
 </div>
 
@@ -25,8 +25,7 @@
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", bandpassPlay);
        
-        var newFilter = new Tone.Filter(750, "bandpass").toMaster();
-        newFilter.Q.value = 4.4;
+        var newFilter = new Tone.Filter(200, "lowpass").toMaster();
 
         var Qslider = document.getElementById("Qslider");
         var output = document.getElementById("demo");
@@ -52,7 +51,6 @@
 
         function adjustQwidth(element) {
             newFilter.Q.value = element.value * Q_multiplier;
-            console.log(newFilter.Q.value);
         }
     </script>
 
