@@ -14,6 +14,7 @@
         var playbutton = document.getElementById("play");
         playbutton.addEventListener("click", bandpassPlay);
         var newFilter = new Tone.Filter(750, "bandpass").toMaster();
+        newFilter.Q = 4.4;
 
 
         var stopbutton = document.getElementById("stop");
