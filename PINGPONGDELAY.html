@@ -33,8 +33,6 @@
 
 	<script>
 		var slider = document.getElementById("slider");
-		var output = document.getElementbyId("demo");
-		output.innerHTML = slider.value;
 		slider.step = ".01";
 		slider.addEventListener("click",updateVal)
 		var arg1 = .5;
@@ -67,9 +65,6 @@
 			console.log(pingPong.delayTime.value);
 		}
 
-		slider.oninput = function() {
-			output.innerHTML = this.value;
-		}
 	</script>
 
 
